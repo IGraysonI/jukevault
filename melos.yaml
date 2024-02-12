@@ -1,0 +1,4 @@
+name: jukevault
+
+packages:
+  - packages/jukevault
