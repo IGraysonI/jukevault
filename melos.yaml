@@ -2,3 +2,4 @@ name: jukevault
 
 packages:
   - packages/jukevault
+  - packages/jukevault_android
