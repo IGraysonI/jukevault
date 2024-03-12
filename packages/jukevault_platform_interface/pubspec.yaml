@@ -1,0 +1,28 @@
+name: jukevault_platform_interface
+description: "A new Flutter plugin project."
+version: 0.0.1
+
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  # on_audio_query
+  plugin_platform_interface: ^2.1.8
+
+  # Flutter
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  # Flutter
+  flutter_lints: ^3.0.1
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.jukevault_platform_interface
+        pluginClass: JukevaultPlatformInterfacePlugin
