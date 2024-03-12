@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:jukevault_platform_interface/method_channel_jukevault.dart';
-import 'package:jukevault_platform_interface/src/on_audio_query_core.dart';
+import 'package:jukevault_platform_interface/src/jukevault_core.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+export 'package:jukevault_platform_interface/src/jukevault_core.dart';
 
 /// The interface that implementations of on_audio_query must implement.
 ///

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
-import 'package:jukevault_platform_interface/src/on_audio_query_core.dart';
 
 const MethodChannel _channel = MethodChannel('com.example.jukevault_android');
 

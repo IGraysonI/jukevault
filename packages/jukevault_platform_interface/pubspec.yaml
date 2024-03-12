@@ -7,15 +7,12 @@ environment:
   flutter: '>=3.3.0'
 
 dependencies:
-  # on_audio_query
   plugin_platform_interface: ^2.1.8
 
-  # Flutter
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  # Flutter
   flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
