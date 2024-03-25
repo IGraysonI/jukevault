@@ -3,7 +3,7 @@ part of jukevault;
 /// Interface and Main method for JukeVault
 class JukeVault {
   /// The platform interface that drives this plugin
-  static OnAudioQueryPlatform get platform => OnAudioQueryPlatform.instance;
+  static JukevaultPlatform get platform => JukevaultPlatform.instance;
 
   dynamic _getArgs(
     WithFiltersType withType,
@@ -29,14 +29,12 @@ class JukeVault {
   /// **OBS: Will always return true on web platform.**
   Future<bool> checkAndRequest({bool retryRequest = false}) async {
     if (kIsWeb) return true;
-
     bool hasPermission = await platform.permissionsStatus();
     if (!hasPermission) {
       hasPermission = await platform.permissionsRequest(
         retryRequest: retryRequest,
       );
     }
-
     return hasPermission;
   }
 
@@ -52,9 +50,7 @@ class JukeVault {
   ///
   /// * If [logType] is null, will be set to [WARN].
   /// * If [detailedLog] is null, will be set to [false].
-  Future<void> setLogConfig(LogConfig? logConfig) async {
-    return platform.setLogConfig(logConfig);
-  }
+  Future<void> setLogConfig(LogConfig? logConfig) async => platform.setLogConfig(logConfig);
 
   /// Used to return Songs Info based in [SongModel].
   ///
@@ -80,22 +76,20 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<SongModel>> querySongs({
     SongSortType? sortType,
     OrderType? orderType,
     UriType? uriType,
     bool? ignoreCase,
     String? path,
-  }) async {
-    return platform.querySongs(
-      sortType: sortType,
-      orderType: orderType,
-      uriType: uriType,
-      ignoreCase: ignoreCase,
-      path: path,
-    );
-  }
+  }) async =>
+      platform.querySongs(
+        sortType: sortType,
+        orderType: orderType,
+        uriType: uriType,
+        ignoreCase: ignoreCase,
+        path: path,
+      );
 
   /// Used to return Albums Info based in [AlbumModel].
   ///
@@ -119,20 +113,18 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<AlbumModel>> queryAlbums({
     AlbumSortType? sortType,
     OrderType? orderType,
     UriType? uriType,
     bool? ignoreCase,
-  }) async {
-    return platform.queryAlbums(
-      sortType: sortType,
-      orderType: orderType,
-      uriType: uriType,
-      ignoreCase: ignoreCase,
-    );
-  }
+  }) async =>
+      platform.queryAlbums(
+        sortType: sortType,
+        orderType: orderType,
+        uriType: uriType,
+        ignoreCase: ignoreCase,
+      );
 
   /// Used to return Artists Info based in [ArtistModel].
   ///
@@ -156,20 +148,18 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<ArtistModel>> queryArtists({
     ArtistSortType? sortType,
     OrderType? orderType,
     UriType? uriType,
     bool? ignoreCase,
-  }) async {
-    return platform.queryArtists(
-      sortType: sortType,
-      orderType: orderType,
-      uriType: uriType,
-      ignoreCase: ignoreCase,
-    );
-  }
+  }) async =>
+      platform.queryArtists(
+        sortType: sortType,
+        orderType: orderType,
+        uriType: uriType,
+        ignoreCase: ignoreCase,
+      );
 
   /// Used to return Playlists Info based in [PlaylistModel].
   ///
@@ -193,20 +183,18 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<PlaylistModel>> queryPlaylists({
     PlaylistSortType? sortType,
     OrderType? orderType,
     UriType? uriType,
     bool? ignoreCase,
-  }) async {
-    return platform.queryPlaylists(
-      sortType: sortType,
-      orderType: orderType,
-      uriType: uriType,
-      ignoreCase: ignoreCase,
-    );
-  }
+  }) async =>
+      platform.queryPlaylists(
+        sortType: sortType,
+        orderType: orderType,
+        uriType: uriType,
+        ignoreCase: ignoreCase,
+      );
 
   /// Used to return Genres Info based in [GenreModel].
   ///
@@ -230,20 +218,18 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<GenreModel>> queryGenres({
     GenreSortType? sortType,
     OrderType? orderType,
     UriType? uriType,
     bool? ignoreCase,
-  }) async {
-    return platform.queryGenres(
-      sortType: sortType,
-      orderType: orderType,
-      uriType: uriType,
-      ignoreCase: ignoreCase,
-    );
-  }
+  }) async =>
+      platform.queryGenres(
+        sortType: sortType,
+        orderType: orderType,
+        uriType: uriType,
+        ignoreCase: ignoreCase,
+      );
 
   /// Used to return Songs/Audios Info from a specific queryType based in [SongModel].
   ///
@@ -261,22 +247,20 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<SongModel>> queryAudiosFrom(
     AudiosFromType type,
     Object where, {
     SongSortType? sortType,
     OrderType? orderType,
     bool? ignoreCase,
-  }) async {
-    return platform.queryAudiosFrom(
-      type,
-      where,
-      sortType: sortType,
-      orderType: orderType,
-      ignoreCase: ignoreCase,
-    );
-  }
+  }) async =>
+      platform.queryAudiosFrom(
+        type,
+        where,
+        sortType: sortType,
+        orderType: orderType,
+        ignoreCase: ignoreCase,
+      );
 
   /// Used to return Songs Info based in Something. Works like a "Search".
   ///
@@ -313,18 +297,16 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<dynamic>> queryWithFilters(
     String argsVal,
     WithFiltersType withType, {
     dynamic args,
-  }) async {
-    return platform.queryWithFilters(
-      argsVal,
-      withType,
-      args ?? _getArgs(withType),
-    );
-  }
+  }) async =>
+      platform.queryWithFilters(
+        argsVal,
+        withType,
+        args ?? _getArgs(withType),
+      );
 
   /// Used to return Songs Artwork.
   ///
@@ -354,22 +336,20 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<Uint8List?> queryArtwork(
     int id,
     ArtworkType type, {
     ArtworkFormat? format,
     int? size,
     int? quality,
-  }) async {
-    return platform.queryArtwork(
-      id,
-      type,
-      format: format,
-      size: size,
-      quality: quality,
-    );
-  }
+  }) async =>
+      platform.queryArtwork(
+        id,
+        type,
+        format: format,
+        size: size,
+        quality: quality,
+      );
 
   /// Used to return Songs Info from a specific [Folder] based in [SongModel].
   ///
@@ -393,20 +373,18 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<SongModel>> queryFromFolder(
     String path, {
     SongSortType? sortType,
     OrderType? orderType,
     UriType? uriType,
-  }) async {
-    return platform.queryFromFolder(
-      path,
-      sortType: sortType,
-      orderType: orderType,
-      uriType: uriType,
-    );
-  }
+  }) async =>
+      platform.queryFromFolder(
+        path,
+        sortType: sortType,
+        orderType: orderType,
+        uriType: uriType,
+      );
 
   /// Used to return Songs path.
   ///
@@ -420,10 +398,7 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<List<String>> queryAllPath() async {
-    return platform.queryAllPath();
-  }
+  Future<List<String>> queryAllPath() async => platform.queryAllPath();
 
   //Playlist methods
 
@@ -445,18 +420,16 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<bool> createPlaylist(
     String name, {
     String? author,
     String? desc,
-  }) async {
-    return platform.createPlaylist(
-      name,
-      author: author,
-      desc: desc,
-    );
-  }
+  }) async =>
+      platform.createPlaylist(
+        name,
+        author: author,
+        desc: desc,
+      );
 
   /// Used to remove/delete a Playlist
   ///
@@ -470,10 +443,7 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> removePlaylist(int playlistId) async {
-    return platform.removePlaylist(playlistId);
-  }
+  Future<bool> removePlaylist(int playlistId) async => platform.removePlaylist(playlistId);
 
   /// Used to add a specific song/audio to a specific Playlist
   ///
@@ -488,10 +458,7 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> addToPlaylist(int playlistId, int audioId) async {
-    return platform.addToPlaylist(playlistId, audioId);
-  }
+  Future<bool> addToPlaylist(int playlistId, int audioId) async => platform.addToPlaylist(playlistId, audioId);
 
   /// Used to remove a specific song/audio from a specific Playlist
   ///
@@ -506,10 +473,8 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> removeFromPlaylist(int playlistId, int audioId) async {
-    return platform.removeFromPlaylist(playlistId, audioId);
-  }
+  Future<bool> removeFromPlaylist(int playlistId, int audioId) async =>
+      platform.removeFromPlaylist(playlistId, audioId);
 
   /// Used to change song/audio position from a specific Playlist
   ///
@@ -525,10 +490,7 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> moveItemTo(int playlistId, int from, int to) async {
-    return platform.moveItemTo(playlistId, from, to);
-  }
+  Future<bool> moveItemTo(int playlistId, int from, int to) async => platform.moveItemTo(playlistId, from, to);
 
   /// Used to rename a specific Playlist
   ///
@@ -542,11 +504,7 @@ class JukeVault {
   /// |   Android   |   IOS   |   Web   |
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
-  ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> renamePlaylist(int playlistId, String newName) async {
-    return renamePlaylist(playlistId, newName);
-  }
+  Future<bool> renamePlaylist(int playlistId, String newName) async => renamePlaylist(playlistId, newName);
 
   // Permissions methods
 
@@ -564,10 +522,7 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> permissionsStatus() async {
-    return platform.permissionsStatus();
-  }
+  Future<bool> permissionsStatus() async => platform.permissionsStatus();
 
   /// Used to request Android permissions.
   ///
@@ -583,10 +538,8 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> permissionsRequest({bool retryRequest = false}) async {
-    return platform.permissionsRequest(retryRequest: retryRequest);
-  }
+  Future<bool> permissionsRequest({bool retryRequest = false}) async =>
+      platform.permissionsRequest(retryRequest: retryRequest);
 
   // Device Information
 
@@ -605,10 +558,7 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<DeviceModel> queryDeviceInfo() async {
-    return platform.queryDeviceInfo();
-  }
+  Future<DeviceModel> queryDeviceInfo() async => platform.queryDeviceInfo();
 
   // Others
 
@@ -627,7 +577,7 @@ class JukeVault {
   /// Example:
   ///
   /// ```dart
-  /// OnAudioQuery _audioQuery = OnAudioQuery();
+  /// Jukevault _audioQuery = Jukevault();
   /// File file = File('path');
   ///
   /// try {
@@ -646,8 +596,5 @@ class JukeVault {
   /// |--------------|-----------------|-----------------|
   /// | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Future<bool> scanMedia(String path) async {
-    return await platform.scanMedia(path);
-  }
+  Future<bool> scanMedia(String path) async => await platform.scanMedia(path);
 }

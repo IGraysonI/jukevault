@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # plugin_platform_interface: ^2.0.2
   jukevault_platform_interface: ^0.0.1
 
 dev_dependencies:
@@ -20,6 +19,7 @@ dev_dependencies:
 
 flutter:
   plugin:
+    implements: jukevault
     platforms:
       android:
         package: com.example.jukevault_android

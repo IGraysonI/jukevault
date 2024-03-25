@@ -13,23 +13,23 @@ export 'package:jukevault_platform_interface/src/jukevault_core.dart';
 /// does not consider newly added methods to be breaking changes. Extending this class
 /// (using `extends`) ensures that the subclass will get the default implementation, while
 /// platform implementations that `implements` this interface will be broken by newly added
-/// [OnAudioQueryPlatform] methods.
-abstract class OnAudioQueryPlatform extends PlatformInterface {
-  /// Constructs a OnAudioQueryPlatform.
-  OnAudioQueryPlatform() : super(token: _token);
+/// [JukevaultPlatform] methods.
+abstract class JukevaultPlatform extends PlatformInterface {
+  /// Constructs a JukevaultPlatform.
+  JukevaultPlatform() : super(token: _token);
 
   static final Object _token = Object();
 
-  static OnAudioQueryPlatform _instance = MethodChannelOnAudioQuery();
+  static JukevaultPlatform _instance = MethodChannelJukevault();
 
-  /// The default instance of [OnAudioQueryPlatform] to use.
+  /// The default instance of [JukevaultPlatform] to use.
   ///
-  /// Defaults to [MethodChannelOnAudioQuery].
-  static OnAudioQueryPlatform get instance => _instance;
+  /// Defaults to [MethodChannelJukevault].
+  static JukevaultPlatform get instance => _instance;
 
   /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [OnAudioQueryPlatform] when they register themselves.
-  static set instance(OnAudioQueryPlatform instance) {
+  /// class that extends [JukevaultPlatform] when they register themselves.
+  static set instance(JukevaultPlatform instance) {
     PlatformInterface.verify(instance, _token);
     _instance = instance;
   }
@@ -552,7 +552,7 @@ abstract class OnAudioQueryPlatform extends PlatformInterface {
   /// Example:
   ///
   /// ```dart
-  /// OnAudioQuery _audioQuery = OnAudioQuery();
+  /// Jukevault _audioQuery = Jukevault();
   /// File file = File('path');
   ///
   /// try {

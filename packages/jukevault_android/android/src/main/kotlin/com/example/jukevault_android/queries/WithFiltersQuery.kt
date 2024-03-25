@@ -63,7 +63,7 @@ class WithFiltersQuery : ViewModel() {
 
             MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI -> checkArtistsArgs(call.argument<Int>("args")!!)
             MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI -> checkGenresArgs(call.argument<Int>("args")!!)
-            else -> throw Exception("[argsKey] returned null. Report this issue on [on_audio_query] GitHub.")
+            else -> throw Exception("[argsKey] returned null. Report this issue on [jukevault] GitHub.")
         }
 
         Log.d(TAG, "Query config: ")

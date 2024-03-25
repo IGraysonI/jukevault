@@ -5,8 +5,8 @@ import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
 
 const MethodChannel _channel = MethodChannel('com.example.jukevault_android');
 
-/// An implementation of [OnAudioQueryPlatform] that uses method channels.
-class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
+/// An implementation of [JukevaultPlatform] that uses method channels.
+class MethodChannelJukevault extends JukevaultPlatform {
   /// The MethodChannel that is being used by this implementation of the plugin.
   MethodChannel get channel => _channel;
 
@@ -34,9 +34,7 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
       'querySongs',
       {
         'sortType': sortType?.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'uri': uriType != null ? uriType.index : UriType.EXTERNAL.index,
         'ignoreCase': ignoreCase ?? true,
         'path': path,
@@ -57,9 +55,7 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
       'queryAlbums',
       {
         'sortType': sortType?.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'uri': uriType != null ? uriType.index : UriType.EXTERNAL.index,
         'ignoreCase': ignoreCase ?? true,
       },
@@ -79,9 +75,7 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
       'queryArtists',
       {
         'sortType': sortType?.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'uri': uriType != null ? uriType.index : UriType.EXTERNAL.index,
         'ignoreCase': ignoreCase ?? true,
       },
@@ -101,9 +95,7 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
       'queryPlaylists',
       {
         'sortType': sortType?.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'uri': uriType != null ? uriType.index : UriType.EXTERNAL.index,
         'ignoreCase': ignoreCase ?? true,
       },
@@ -123,9 +115,7 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
       'queryGenres',
       {
         'sortType': sortType?.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'uri': uriType != null ? uriType.index : UriType.EXTERNAL.index,
         'ignoreCase': ignoreCase ?? true,
       },
@@ -148,9 +138,7 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
         'type': type.index,
         'where': where,
         'sortType': sortType?.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'ignoreCase': ignoreCase ?? true,
       },
     ) as List<dynamic>;
@@ -203,11 +191,8 @@ class MethodChannelOnAudioQuery extends OnAudioQueryPlatform {
     final resultFromFolder = await _channel.invokeMethod(
       'queryFromFolder',
       {
-        'sortType':
-            sortType != null ? sortType.index : SongSortType.TITLE.index,
-        'orderType': orderType != null
-            ? orderType.index
-            : OrderType.ASC_OR_SMALLER.index,
+        'sortType': sortType != null ? sortType.index : SongSortType.TITLE.index,
+        'orderType': orderType != null ? orderType.index : OrderType.ASC_OR_SMALLER.index,
         'uri': uriType != null ? uriType.index : UriType.EXTERNAL.index,
         'path': path
       },
