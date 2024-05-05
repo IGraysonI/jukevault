@@ -1,77 +1,58 @@
 package com.example.jukevault_android.controllers
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.jukevault_android.providers.PluginProvider
-import io.flutter.Log
+import com.example.jukevault_android.interfaces.PermissionManagerInterface
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 
-interface PermissionManagerInterface {
-    fun permissionStatus(): Boolean
-    fun requestPermission()
-
-    fun retryRequestPermission()
-}
-
-class PermissionController : PermissionManagerInterface,
-    PluginRegistry.RequestPermissionsResultListener {
-
-    companion object {
-        // Get the current class name.
-        private const val TAG: String = "PermissionController"
-
-        // Request code for the permission request.
-        private const val REQUEST_CODE: Int = 88560
+class PermissionController(
+    private var retryRequest: Boolean = false
+) : PermissionManagerInterface, PluginRegistry.RequestPermissionsResultListener {
+    private lateinit var activity: Activity
+    private lateinit var result: MethodChannel.Result
+    private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            Manifest.permission.READ_MEDIA_AUDIO
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
     }
 
-    var retryRequest: Boolean = false
+    private val requestCode: Int = 88560
 
-    // Permission for specific android versions.
-    private var permissions: Array<String> =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                Manifest.permission.READ_MEDIA_AUDIO,
-                Manifest.permission.READ_MEDIA_IMAGES
-            )
-        } else {
-            arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        }
-
-    override fun permissionStatus(): Boolean = permissions.all {
-        // After "leaving" this class, context will be null. We need this context argument
-        // to call the [checkSelfPermission] method.
+    override fun permissionStatus(context: Context): Boolean = permissions.all {
+        // After "leaving" this class, context will be null so, we need this context argument to
+        // call the [checkSelfPermission].
         return ContextCompat.checkSelfPermission(
-            PluginProvider.context(),
+            context,
             it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun requestPermission() {
-        Log.d(TAG, "Requesting permission")
-        Log.d(TAG, "SDK:: ${Build.VERSION.SDK_INT}, Should retry request: $retryRequest")
-        val activity = PluginProvider.activity()
-        ActivityCompat.requestPermissions(
-            activity,
-            permissions,
-            REQUEST_CODE
-        )
+    override fun requestPermission(activity: Activity, result: MethodChannel.Result) {
+        this.activity = activity
+        this.result = result
+        ActivityCompat.requestPermissions(activity, permissions, requestCode)
     }
 
-    /// Second requestPermission, this one with the option "Never Ask Again".
+    // Second requestPermission, this one with the option "Never Ask Again".
     override fun retryRequestPermission() {
-        val activity = PluginProvider.activity()
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[0])
             || ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[1])
         ) {
-            Log.d(TAG, "Retrying permission request")
             retryRequest = false
-            requestPermission()
+            if (this::activity.isInitialized && this::result.isInitialized) {
+                requestPermission(activity, result)
+            }
         }
     }
 
@@ -80,29 +61,29 @@ class PermissionController : PermissionManagerInterface,
         permissions: Array<out String>,
         grantResults: IntArray
     ): Boolean {
-        // When the incoming request code doesn't match the request code defined by the plugin
-        // return [false] to indicate the plugin is not handling the request result and
-        // Android should continue executing other registered handlers.
-        if (REQUEST_CODE != requestCode) return false
+        // When [pResult] is not initialized the permission request did not originate from the
+        // [on_audio_query] plugin, so return [false] to indicate the [on_audio_query] plugin is not
+        // handling the request result and Android should continue executing other registered handlers.
+        if (!this::result.isInitialized) return false
+
+        // When the incoming request code doesn't match the request codes defined by the on_audio_query
+        // plugin return [false] to indicate the [on_audio_query] plugin is not handling the request
+        // result and Android should continue executing other registered handlers.
+        if (requestCode != requestCode) return false
 
         // Check permission
-        val isPermissionGranted =
-            (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-
-        Log.d(TAG, "Permission granted: $isPermissionGranted")
+        val isPermissionGranted = (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED)
 
         // After all checks, we can handle the permission request.
-        val result = PluginProvider.result()
         when {
             isPermissionGranted -> result.success(true)
             retryRequest -> retryRequestPermission()
             else -> result.success(false)
         }
 
-        // Return [true] here to indicate that the plugin handled the permission request result
-        // and Android should not continue executing other registered handlers.
+        // Return [true] here to indicate that the [on_audio_query] plugin handled the permission request
+        // result and Android should not continue executing other registered handlers.
         return true
     }
 }
-
-

@@ -1,17 +1,7 @@
 library jukevault;
 
-// Dart
-import 'dart:async';
+export 'package:jukevault_platform_interface/jukevault_platform_interface.dart'
+    hide JukevaultPlatform, ObserverInterface, QueryHelperInterface, defaultArtworksPath;
 
-// Flutter
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-// Platform Interface
-import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
-
-export 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
-
-// Controllers
-part 'src/jukevault.dart';
-// Widgets
-part 'widget/query_artwork_widget.dart';
+export 'src/jukevault_controller.dart';
+export 'src/widget/query_artwork_widget.dart';

@@ -1,123 +1,142 @@
 import 'package:flutter/material.dart';
-import 'package:jukevault/jukevault.dart';
+
+import 'main_controller.dart';
+import 'src/observer/observe_audios.dart';
+import 'src/query/query_songs.dart';
+import 'src/widgets/settings_dialog_widget.dart';
 
 void main() => runApp(
-      const MaterialApp(
-        home: Songs(),
+      MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.light().copyWith(primaryColor: Colors.grey[200]),
+        darkTheme: ThemeData.dark(),
+        home: const Main(),
       ),
     );
 
-class Songs extends StatefulWidget {
-  const Songs({super.key});
+class Main extends StatefulWidget {
+  const Main({super.key});
 
   @override
-  _SongsState createState() => _SongsState();
+  MainState createState() => MainState();
 }
 
-class _SongsState extends State<Songs> {
-  // Main method.
-  final JukeVault _jukeVault = JukeVault();
+class MainState extends State<Main> {
+  // Default border to all app.
+  final BorderRadius borderRadius = BorderRadius.circular(10);
 
-  // Indicate if application has permission to the library.
-  bool _hasPermission = false;
+  // Controller.
+  final MainController _controller = MainController();
 
   @override
   void initState() {
     super.initState();
-    // (Optinal) Set logging level. By default will be set to 'WARN'.
-    //
-    // Log will appear on:
-    //  * XCode: Debug Console
-    //  * VsCode: Debug Console
-    //  * Android Studio: Debug and Logcat Console
-    LogConfig logConfig = LogConfig(logType: LogType.DEBUG);
-    _jukeVault.setLogConfig(logConfig);
-
-    // Check and request for permission.
-    checkAndRequestPermissions();
+    _controller.checkPermisison();
   }
 
-  checkAndRequestPermissions({bool retry = false}) async {
-    // The param 'retryRequest' is false, by default.
-    _hasPermission = await _jukeVault.checkAndRequest(
-      retryRequest: retry,
-    );
-
-    // Only call update the UI if application has all required permissions.
-    _hasPermission ? setState(() {}) : null;
-  }
-
-  Widget noAccessToLibraryWidget() => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.redAccent.withOpacity(0.5),
+  Widget titleWidget(BuildContext context, String title) => Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.06),
+          child: Text(title),
         ),
-        padding: const EdgeInsets.all(20),
+      );
+
+  Widget messageWidget(BuildContext context) => Container(
+        margin: const EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        width: MediaQuery.of(context).size.width * 0.9,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: borderRadius,
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Application doesn't have access to the library"),
+            const Text(
+              'This plugin require: \nLibrary (IOS) and READ (Android) permissions.',
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => checkAndRequestPermissions(retry: true),
-              child: const Text("Allow"),
+              onPressed: _controller.hasError ? null : _controller.requestPermission(context),
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              child: const Text('Grant permission'),
+            )
+          ],
+        ),
+      );
+
+  Widget queriesWidget(BuildContext context) => SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Wrap(
+          runSpacing: 5,
+          children: [
+            tileWidget(
+              context,
+              'Static Query',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const QueryAudios())),
+            ),
+            tileWidget(
+              context,
+              'Dynamic Query',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ObserveAudios())),
             ),
           ],
         ),
       );
 
+  Widget tileWidget(
+    BuildContext context,
+    String title, {
+    void Function()? onTap,
+    IconData icon = Icons.navigate_next_rounded,
+  }) =>
+      ListTile(
+        shape: RoundedRectangleBorder(borderRadius: borderRadius),
+        tileColor: Theme.of(context).primaryColor,
+        title: Text(title),
+        trailing: Icon(icon),
+        onTap: onTap,
+      );
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text("OnAudioQueryExample"),
-          elevation: 2,
+          elevation: 1.5,
+          shadowColor: Colors.black.withOpacity(0.5),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Text(
+            "OnAudioQuery",
+            style: TextStyle(
+              fontSize: 20,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            ),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () => showSettingsDialog(context),
+              icon: const Icon(Icons.more_vert),
+            )
+          ],
         ),
-        body: Center(
-          child: !_hasPermission
-              ? noAccessToLibraryWidget()
-              : FutureBuilder<List<SongModel>>(
-                  // Default values:
-                  future: _jukeVault.querySongs(
-                    sortType: null,
-                    orderType: OrderType.ASC_OR_SMALLER,
-                    uriType: UriType.EXTERNAL,
-                    ignoreCase: true,
-                  ),
-                  builder: (context, item) {
-                    // Display error, if any.
-                    if (item.hasError) {
-                      return Text(item.error.toString());
-                    }
-
-                    // Waiting content.
-                    if (item.data == null) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    // 'Library' is empty.
-                    if (item.data!.isEmpty) return const Text("Nothing found!");
-
-                    // You can use [item.data!] direct or you can create a:
-                    // List<SongModel> songs = item.data!;
-                    return ListView.builder(
-                      itemCount: item.data!.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(item.data![index].title),
-                          subtitle: Text(item.data![index].artist ?? "No Artist"),
-                          trailing: const Icon(Icons.arrow_forward_rounded),
-                          // This Widget will query/load image.
-                          // You can use/create your own widget/method using [queryArtwork].
-                          leading: QueryArtworkWidget(
-                            controller: _jukeVault,
-                            id: item.data![index].id,
-                            type: ArtworkType.AUDIO,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Wrap(
+              runSpacing: 15,
+              alignment: WrapAlignment.center,
+              children: [
+                messageWidget(context),
+                titleWidget(context, 'Queries'),
+                queriesWidget(context),
+                titleWidget(context, 'Help'),
+              ],
+            ),
+          ),
         ),
       );
 }

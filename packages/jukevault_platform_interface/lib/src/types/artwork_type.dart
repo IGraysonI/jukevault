@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of '../controllers/types_controller.dart';
+
 /// Defines where artwork will be acquired.
 enum ArtworkType {
   /// Artwork from Audios.
@@ -28,14 +30,4 @@ enum ArtworkType {
   /// * There's no native support for [Genres] artwork so, we take the artwork from
   /// the first audio.
   GENRE,
-}
-
-/// Defines the type of image.
-/// Read [JPEG] and [PNG] for know the difference between performance.
-enum ArtworkFormat {
-  /// Note: [JPEG] images give a better performance when call the method and give a "bad" image quality.
-  JPEG,
-
-  /// Note: [PNG] images give a slow performance when call the method and give a "good" image quality.
-  PNG,
 }

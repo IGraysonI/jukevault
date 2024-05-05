@@ -1,171 +1,230 @@
 package com.example.jukevault_android
 
-
+import android.app.Activity
+import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Build
-import com.example.jukevault_android.consts.Method
-import com.example.jukevault_android.controllers.MethodController
+import androidx.annotation.NonNull
 import com.example.jukevault_android.controllers.PermissionController
-import com.example.jukevault_android.providers.PluginProvider
-import io.flutter.Log
+import com.example.jukevault_android.controllers.QueryController
+import com.example.jukevault_android.methods.observers.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-/** JukevaultAndroidPlugin */
-class JukevaultAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
-    init {
-        // Set default logging level.
-        Log.setLogLevel(Log.WARN)
-    }
+/** JukevaultPlugin Central */
+class JukevaultPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     companion object {
         // Get the current class name.
-        private const val TAG: String = "JukevaultAndroidPlugin"
+        private val TAG: String = this::class.java.name
 
         // Method channel name.
-        //TODO: Change this to the name of your plugin.
-        private const val CHANNEL_NAME: String = "jukevault_android"
+        private const val CHANNEL_NAME = "com.example.jukevault_android"
+
+        // Event channels name.
+        private const val AUDIOS_OBS_CHANNEL_NAME = "$CHANNEL_NAME/audios_observer"
+        private const val ALBUMS_OBS_CHANNEL_NAME = "$CHANNEL_NAME/albums_observer"
+        private const val PLAYLISTS_OBS_CHANNEL_NAME = "$CHANNEL_NAME/playlists_observer"
+        private const val ARTISTS_OBS_CHANNEL_NAME = "$CHANNEL_NAME/artists_observer"
+        private const val GENRES_OBS_CHANNEL_NAME = "$CHANNEL_NAME/genres_observer"
     }
 
-    private var permissionController = PermissionController()
-    private var methodController = MethodController()
-    private var binding: ActivityPluginBinding? = null
-
-    /// The MethodChannel that will the communication between Flutter and native Android
-    ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-    /// when the Flutter Engine is detached from the Activity
+    // Dart <-> Kotlin communication
     private lateinit var channel: MethodChannel
 
-    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        Log.i(TAG, "onAttachedToEngine")
+    //
+    private lateinit var context: Context
+    private lateinit var queryController: QueryController
+    private lateinit var permissionController: PermissionController
+
+    // Main parameters
+    private var activity: Activity? = null
+    private var binding: ActivityPluginBinding? = null
+
+    // Observers
+    private var audiosObserver: AudiosObserver? = null
+    private var albumsObserver: AlbumsObserver? = null
+    private var playlistsObserver: PlaylistsObserver? = null
+    private var artistsObserver: ArtistsObserver? = null
+    private var genresObserver: GenresObserver? = null
+
+    // Dart <-> Kotlin communication
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        // Define the [context]
+        context = flutterPluginBinding.applicationContext
+
+        // Setup the method channel communication.
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME)
         channel.setMethodCallHandler(this)
+
+        // Setup all event channel communication.
+        setUpEventChannel(flutterPluginBinding.binaryMessenger)
     }
 
-    override fun onMethodCall(call: MethodCall, result: Result) {
-        Log.i(TAG, "onMethodCall start")
+    // Methods will always follow the same route:
+    // Receive method -> check permission -> controller -> do what's needed -> return to dart
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        // Setup the [QueryController].
+        this.queryController = QueryController(context, call, result)
 
-        // Init the plugin provider with the current call and result.
-        PluginProvider.setCurrentMethod(call, result)
+        // Both [activity] and [binding] are from [onAttachedToActivity].
+        // If one of them are null. Something is really wrong.
+        if (activity == null || binding == null) {
+            result.error(
+                "$TAG::onMethodCall",
+                "The [activity] or [binding] parameter is null!",
+                null
+            )
+        }
 
-        // If user deny permission request pop up will immediately show up.
-        // If [retryRequest] is null, the message will only show when call method again
+        // If user deny permission request a pop up will immediately show up.
+        // If [retryRequest] is null, the message will only show after calling the method again.
         val retryRequest = call.argument<Boolean>("retryRequest") ?: false
-        permissionController.retryRequest = retryRequest
 
-        Log.i(TAG, "onMethodCall: ${call.method}")
+        // Setup the [PermissionController]
+        permissionController = PermissionController(retryRequest)
+
+        // Detect the method.
         when (call.method) {
-            // Permission
-            Method.PERMISSION_STATUS -> {
-                val hasPermission = permissionController.permissionStatus()
-                result.success(hasPermission)
-            }
+            // Permissions
+            "permissionsStatus" -> result.success(permissionController.permissionStatus(context))
+            "permissionsRequest" -> {
+                // Add to controller the ability to listen the request result.
+                binding!!.addRequestPermissionsResultListener(permissionController)
 
-            Method.PERMISSION_REQUEST -> {
-                permissionController.requestPermission()
+                // Request the permission.
+                permissionController.requestPermission(activity!!, result)
             }
 
             // Device information
-            Method.GET_DEVICE_INFO -> {
+            "queryDeviceInfo" -> {
                 result.success(
                     hashMapOf<String, Any>(
                         "device_model" to Build.MODEL,
                         "device_sys_version" to Build.VERSION.SDK_INT,
-                        "device_sys_type" to "Android",
+                        "device_sys_type" to "Android"
                     )
                 )
             }
 
-            // This method will scan the given path to update the state.
-            // When deleting a file using 'dart:io', call this method to update the file state
-            Method.SCAN -> {
-                val sPath: String? = call.argument<String>("path")
-                val context = PluginProvider.context()
+            // This method will scan the given path to update the 'state'.
+            // When deleting a file using 'dart:io', call this method to update the file 'state'.
+            "scan" -> {
+                // TODO: Add option to scan multiple paths.
+                val sPath: String = call.argument<String>("path")!!
 
-                // Check if the given file is null or empty.
-                if (sPath == null || sPath.isEmpty()) {
-                    Log.w(TAG, "onMethodCall: The given path is null or empty")
-                    result.success(false)
-                }
+                // Check if the given file is empty.
+                if (sPath.isEmpty()) result.success(false)
 
-                // Scan and return.
-                MediaScannerConnection.scanFile(context, arrayOf(sPath), null) { _, _ ->
-                    Log.i(TAG, "onMethodCall: Scanned $sPath")
+                // Scan and return
+                MediaScannerConnection.scanFile(
+                    context,
+                    arrayOf(sPath),
+                    null
+                ) { _, _ ->
                     result.success(true)
                 }
             }
 
-            // Logging
-            Method.SET_LOG_CONFIG -> {
-                // Log level.
-                Log.setLogLevel(call.argument<Int>("level")!!)
-
-                // Define if 'warn' level will show more detailed logs.
-                PluginProvider.showDetailedLog = call.argument<Boolean>("showDetailedLog")!!
-                result.success(true)
-            }
-
-            // All other methods
-            else -> {
-                Log.d(TAG, "Checking permission")
-                val hasPermission = permissionController.permissionStatus()
-                Log.d(TAG, "Permission status: $hasPermission")
-                if (!hasPermission) {
-                    Log.w(TAG, "onMethodCall: Permission denied")
-                    result.error(
-                        "Missing permission",
-                        "Application does not have permission to access audio files",
-                        "Call the [requestPermission] method to request permission"
+            "observersStatus" -> {
+                result.success(
+                    hashMapOf(
+                        "audios_observer" to (audiosObserver?.isRunning ?: false),
+                        "albums_observer" to (albumsObserver?.isRunning ?: false),
+                        "artists_observer" to (artistsObserver?.isRunning ?: false),
+                        "playlists_observer" to (playlistsObserver?.isRunning ?: false),
+                        "genres_observer" to (genresObserver?.isRunning ?: false),
                     )
-                }
-                methodController.find()
+                )
             }
+
+            // All others methods
+            else -> queryController.call()
         }
-        Log.d(TAG, "onMethodCall end")
     }
 
-    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        Log.i(TAG, "onDetachedFromEngine")
+    // Dart <-> Kotlin communication
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
     }
 
+    // Attach the activity and get the [activity] and [binding].
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        Log.i(TAG, "onAttachedToActivity")
-
-        // Init plugin provider with 'activity' and 'context'.
-        PluginProvider.set(binding.activity)
-
-        // Add to controller the permission to listen to the request result.
+        // Define the activity and binding.
+        this.activity = binding.activity
         this.binding = binding
-        binding.addRequestPermissionsResultListener(permissionController)
     }
 
-    override fun onDetachedFromActivityForConfigChanges() {
-        Log.i(TAG, "onDetachedFromActivityForConfigChanges")
-        onDetachedFromActivity()
-    }
-
+    //
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        Log.i(TAG, "onReattachedToActivityForConfigChanges")
         onAttachedToActivity(binding)
     }
 
     // Detach all parameters.
     override fun onDetachedFromActivity() {
-        Log.i(TAG, "onDetachedFromActivity")
-
-        // Remove the permission listener.
+        // Remove the permission listener
         if (binding != null) {
             binding!!.removeRequestPermissionsResultListener(permissionController)
         }
 
+        // Remove both [activity] and [binding].
+        this.activity = null
         this.binding = null
-        Log.i(TAG, "onDetachedFromActivity end")
+
+        // Remove all event channel.
+        audiosObserver?.onCancel(null)
+        audiosObserver = null
+
+        albumsObserver?.onCancel(null)
+        albumsObserver = null
+
+        playlistsObserver?.onCancel(null)
+        playlistsObserver = null
+
+        artistsObserver?.onCancel(null)
+        artistsObserver = null
+
+        genresObserver?.onCancel(null)
+        genresObserver = null
+    }
+
+    //
+    override fun onDetachedFromActivityForConfigChanges() {
+        onDetachedFromActivity()
+    }
+
+    // TODO: Check if this setup consumes much memory.
+    private fun setUpEventChannel(binaryMessenger: BinaryMessenger) {
+        // Audios channel.
+        val audiosChannel = EventChannel(binaryMessenger, AUDIOS_OBS_CHANNEL_NAME)
+        audiosObserver = AudiosObserver(context)
+        audiosChannel.setStreamHandler(audiosObserver)
+
+        // Albums channel.
+        val albumsChannel = EventChannel(binaryMessenger, ALBUMS_OBS_CHANNEL_NAME)
+        albumsObserver = AlbumsObserver(context)
+        albumsChannel.setStreamHandler(albumsObserver)
+
+        // Playlists channel.
+        val playlistsChannel = EventChannel(binaryMessenger, PLAYLISTS_OBS_CHANNEL_NAME)
+        playlistsObserver = PlaylistsObserver(context)
+        playlistsChannel.setStreamHandler(playlistsObserver)
+
+        // Artists channel.
+        val artistsChannel = EventChannel(binaryMessenger, ARTISTS_OBS_CHANNEL_NAME)
+        artistsObserver = ArtistsObserver(context)
+        artistsChannel.setStreamHandler(artistsObserver)
+
+        // Genres channel.
+        val genresChannel = EventChannel(binaryMessenger, GENRES_OBS_CHANNEL_NAME)
+        genresObserver = GenresObserver(context)
+        genresChannel.setStreamHandler(genresObserver)
     }
 }
