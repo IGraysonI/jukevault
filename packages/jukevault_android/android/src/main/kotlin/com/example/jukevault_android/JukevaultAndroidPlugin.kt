@@ -18,8 +18,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-/** JukevaultPlugin Central */
-class JukevaultPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+/** JukevaultAndroidPlugin Central */
+class JukevaultAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     companion object {
         // Get the current class name.
