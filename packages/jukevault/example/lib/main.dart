@@ -34,7 +34,7 @@ class MainState extends State<Main> {
     _controller.checkPermisison();
   }
 
-  Widget titleWidget(BuildContext context, String title) => Align(
+  Widget _titleWidget(BuildContext context, String title) => Align(
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.06),
@@ -42,7 +42,7 @@ class MainState extends State<Main> {
         ),
       );
 
-  Widget messageWidget(BuildContext context) => Container(
+  Widget _messageWidget(BuildContext context) => Container(
         margin: const EdgeInsets.only(top: 15),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         width: MediaQuery.of(context).size.width * 0.9,
@@ -50,26 +50,33 @@ class MainState extends State<Main> {
           color: Theme.of(context).primaryColor,
           borderRadius: borderRadius,
         ),
-        child: Column(
-          children: [
-            const Text(
-              'This plugin require: \nLibrary (IOS) and READ (Android) permissions.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _controller.hasError ? null : _controller.requestPermission(context),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+        child: _controller.hasPermission
+            ? const Center(
+                child: Text(
+                  'Permission granted',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.green,
+                  ),
+                ),
+              )
+            : Column(
+                children: [
+                  const Text(
+                    'This plugin require: \nLibrary (IOS) and READ (Android) permissions.',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _controller.hasError ? null : _controller.requestPermission(context),
+                    child: const Text('Grant permission'),
+                  )
+                ],
               ),
-              child: const Text('Grant permission'),
-            )
-          ],
-        ),
       );
 
-  Widget queriesWidget(BuildContext context) => SizedBox(
+  Widget _queriesWidget(BuildContext context) => SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
         child: Wrap(
           runSpacing: 5,
@@ -130,10 +137,10 @@ class MainState extends State<Main> {
               runSpacing: 15,
               alignment: WrapAlignment.center,
               children: [
-                messageWidget(context),
-                titleWidget(context, 'Queries'),
-                queriesWidget(context),
-                titleWidget(context, 'Help'),
+                _messageWidget(context),
+                _titleWidget(context, 'Queries'),
+                _queriesWidget(context),
+                _titleWidget(context, 'Help'),
               ],
             ),
           ),

@@ -58,9 +58,10 @@ class ObserveAudiosState extends State<ObserveAudios> {
             // toRemove: const {},
             // type: const {AudioType.IS_MUSIC : true},
             stream: _jukeVault.observeAudios(
-                filter: MediaFilter.forAudios(limit: 50 // Debug
-                    )),
+              filter: MediaFilter.forAudios(audioSortType: AudioSortType.ALBUM),
+            ),
             builder: (context, item) {
+              // return const Text('dsa');
               // When you try 'query' without asking for [READ] permission the plugin
               // will throw a [PlatformException].
               //
