@@ -7,11 +7,9 @@ class MainController {
   final JukeVault query = JukeVault();
 
   bool get hasPermission => _hasPermission;
-
   bool get hasError => _hasError;
 
   bool _hasPermission = false;
-
   bool _hasError = false;
 
   void checkPermisison() async {
