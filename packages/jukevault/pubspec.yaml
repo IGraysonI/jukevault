@@ -1,0 +1,32 @@
+# ========
+# author: Grayson
+# github: https://github.com/IGraysonI
+# ========
+name: jukevault
+description: Flutter plugin used to get device audio files to READ and WRITE
+version: 0.0.1
+homepage: https://github.com/IGraysonI/jukevault
+issue_tracker: https://github.com/IGraysonI/jukevault/issues
+
+environment:
+  sdk: '>=3.2.5 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  jukevault_android: ^0.0.1
+  jukevault_platform_interface: ^0.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  plugin:
+    platforms:
+      android:
+        default_package: jukevault_android

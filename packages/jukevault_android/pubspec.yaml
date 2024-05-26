@@ -1,0 +1,26 @@
+name: jukevault_android
+description: "A new Flutter plugin project."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  jukevault_platform_interface: ^0.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  plugin:
+    implements: jukevault
+    platforms:
+      android:
+        package: com.example.jukevault_android
+        pluginClass: JukevaultAndroidPlugin
