@@ -1,9 +1,0 @@
-name: jukevault
-
-packages:
-  - packages/*
-  - packages/*/example
-  # - packages/jukevault
-  # - packages/jukevault_example
-  # - packages/jukevault_android
-  # - packages/jukevault_platform_interface
