@@ -14,4 +14,16 @@ class MethodChannelJukevaultAndroid extends JukevaultAndroidPlatform {
     final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
+
+  @override
+  Future<bool> permissionStatus() async {
+    final status = await methodChannel.invokeMethod<bool>('permissionStatus');
+    return status ?? false;
+  }
+
+  @override
+  Future<bool> requestPermission() async {
+    final status = await methodChannel.invokeMethod<bool>('permissionRequest');
+    return status ?? false;
+  }
 }
