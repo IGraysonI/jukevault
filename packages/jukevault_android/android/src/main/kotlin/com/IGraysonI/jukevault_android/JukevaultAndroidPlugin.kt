@@ -1,4 +1,4 @@
-package com.IGraysonI.jukevault_android
+package com.igraysoni.jukevault_android
 
 import androidx.annotation.NonNull
 
@@ -17,7 +17,7 @@ class JukevaultAndroidPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "jukevault_android")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.igraysoni.jukevault_android")
     channel.setMethodCallHandler(this)
   }
 

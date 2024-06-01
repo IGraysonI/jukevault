@@ -7,7 +7,7 @@ import 'jukevault_android_platform_interface.dart';
 class MethodChannelJukevaultAndroid extends JukevaultAndroidPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('jukevault_android');
+  final methodChannel = const MethodChannel('com.igraysoni.jukevault_android');
 
   @override
   Future<String?> getPlatformVersion() async {

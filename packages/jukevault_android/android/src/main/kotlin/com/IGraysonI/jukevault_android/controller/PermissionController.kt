@@ -1,4 +1,4 @@
-package com.IGraysonI.jukevault_android.controller
+package com.igraysoni.jukevault_android.controller
 
 class PermissionController {
 }

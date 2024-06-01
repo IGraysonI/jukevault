@@ -1,7 +1,7 @@
 name: jukevault_platform_interface
 description: A common platform interface for the jukevault plugin.
 version: 0.0.1
-homepage: https://github.com/IGraysonI/jukevault/packages/jukevault_platform_interface
+homepage: https://github.com/igraysoni/jukevault/packages/jukevault_platform_interface
 publish_to: 'none'
 
 environment:

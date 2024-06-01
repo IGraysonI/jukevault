@@ -8,7 +8,7 @@
 PRODUCT_NAME = jukevault_example
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.IGraysonI.jukevaultExample
+PRODUCT_BUNDLE_IDENTIFIER = com.igraysoni.jukevaultExample
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.IGraysonI. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.igraysoni. All rights reserved.

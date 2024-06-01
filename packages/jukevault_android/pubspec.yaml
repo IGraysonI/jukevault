@@ -1,7 +1,7 @@
 name: jukevault_android
 description: Android implementation of the jukevault plugin.
 version: 0.0.1
-homepage: https://github.com/IGraysonI/jukevault/packages/jukevault_android
+homepage: https://github.com/igraysoni/jukevault/packages/jukevault_android
 publish_to: 'none'
 
 environment:
@@ -15,7 +15,7 @@ dependencies:
 
   jukevault_platform_interface:
     git:
-      url: https://github.com/IGraysonI/jukevault
+      url: https://github.com/igraysoni/jukevault
       path: packages/jukevault_platform_interface
       ref: android_base
 
@@ -29,7 +29,7 @@ flutter:
     implements: jukevault
     platforms:
       android:
-        package: com.IGraysonI.jukevault_android
+        package: com.igraysoni.jukevault_android
         pluginClass: JukevaultAndroidPlugin
         # dartPluginClass: JukevaultPluginAndroid
       

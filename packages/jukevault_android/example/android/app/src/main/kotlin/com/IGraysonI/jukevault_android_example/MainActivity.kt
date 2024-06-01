@@ -1,4 +1,4 @@
-package com.IGraysonI.jukevault_android_example
+package com.igraysoni.jukevault_android_example
 
 import io.flutter.embedding.android.FlutterActivity
 

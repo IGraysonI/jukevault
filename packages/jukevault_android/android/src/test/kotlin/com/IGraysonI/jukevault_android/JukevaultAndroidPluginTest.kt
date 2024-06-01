@@ -1,4 +1,4 @@
-package com.IGraysonI.jukevault_android
+package com.igraysoni.jukevault_android
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
