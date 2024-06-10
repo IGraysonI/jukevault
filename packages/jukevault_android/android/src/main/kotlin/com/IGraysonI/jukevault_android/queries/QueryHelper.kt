@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import com.igraysoni.jukevault_android.enums.MediaTypeEnum
 import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.tag.FieldKey
 import java.io.File
@@ -165,11 +164,11 @@ class QueryHelper {
     @Suppress("DEPRECATION")
     /** Method for getting the media count for genres and playlists. */
     fun getMediaCount(
-        mediaType: MediaTypeEnum,
+        type: Int,
         arguments: String,
         resolver: ContentResolver,
     ): Int {
-        val uri: Uri = if (mediaType == MediaTypeEnum.GENRE) {
+        val uri: Uri = if (type == 0) {
             MediaStore.Audio.Genres.Members.getContentUri("external", arguments.toLong())
         } else {
             MediaStore.Audio.Playlists.Members.getContentUri("external", arguments.toLong())
@@ -184,18 +183,18 @@ class QueryHelper {
     @Suppress("DEPRECATION")
     /** Method for loading the first item for audio/album/artist/genre/playlist. */
     fun loadFirstItem(
-        mediaType: MediaTypeEnum,
+        type: Int,
         id: Number,
         resolver: ContentResolver,
     ): String? {
         // Method to query the first item for Audio/Album/Artist are the same.
         // Playlist and Genre require a different uri.
-        val selection: String? = when (mediaType) {
-            MediaTypeEnum.AUDIO -> MediaStore.Audio.Media._ID + "=?"
-            MediaTypeEnum.ALBUM -> MediaStore.Audio.Media.ALBUM_ID + "=?"
-            MediaTypeEnum.ARTIST -> MediaStore.Audio.Media.ARTIST_ID + "=?"
-            MediaTypeEnum.GENRE -> null
-            MediaTypeEnum.PLAYLIST -> null
+        val selection: String? = when (type) {
+            0 -> MediaStore.Audio.Media._ID + "=?"
+            1 -> MediaStore.Audio.Media.ALBUM_ID + "=?"
+            2 -> null
+            3 -> MediaStore.Audio.Media.ARTIST_ID + "=?"
+            4 -> null
             else -> return null
         }
 
@@ -207,7 +206,7 @@ class QueryHelper {
             // Type 2 == Playlist
             // Type 4 == Genre
             when (true) {
-                (mediaType == MediaTypeEnum.PLAYLIST) -> {
+                (type == 2) -> {
                     cursor = resolver.query(
                         MediaStore.Audio.Playlists.Members.getContentUri("external", id.toLong()),
                         arrayOf(
@@ -219,7 +218,7 @@ class QueryHelper {
                         null
                     )
                 }
-                (mediaType == MediaTypeEnum.GENRE) -> {
+                (type == 4) -> {
                     cursor = resolver.query(
                         MediaStore.Audio.Genres.Members.getContentUri("external", id.toLong()),
                         arrayOf(
@@ -252,9 +251,7 @@ class QueryHelper {
             // Try / Catch in case of empty playlist or genre.
             try{
                 dataOrId =
-                    if (Build.VERSION.SDK_INT >= 29 && (mediaType == MediaTypeEnum.PLAYLIST
-                                        || mediaType == MediaTypeEnum.ARTIST
-                                        || mediaType == MediaTypeEnum.GENRE)) {
+                    if (Build.VERSION.SDK_INT >= 29 && (type == 2 || type == 3 || type == 4)) {
                         cursor.getString(1)
                     } else {
                         cursor.getString(0)

@@ -3,13 +3,13 @@ package com.igraysoni.jukevault_android.queries
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.igraysoni.jukevault_android.controller.PermissionController
-import com.igraysoni.jukevault_android.types.checkAlbumSortType
-import com.igraysoni.jukevault_android.types.checkAlbumUriType
+import com.igraysoni.jukevault_android.types.checkAudioType
+import com.igraysoni.jukevault_android.types.checkGenreSortType
+import com.igraysoni.jukevault_android.types.checkGenreUriType
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -18,10 +18,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * AlbumsQuery class.
- * This class is used to query the albums.
+ * GenresQuery class.
+ * This class is used to query the genres.
  */
-class AlbumsQuery: ViewModel() {
+class GenresQuery : ViewModel() {
     // Main parameters.
     private val helper = QueryHelper()
     private var selection: String = ""
@@ -31,53 +31,38 @@ class AlbumsQuery: ViewModel() {
     private lateinit var sortType: String
     private lateinit var resolver: ContentResolver
 
-    private val albumProjection: Array<String> get() : Array<String> {
-            val temporaryProjection = arrayListOf(
-                MediaStore.Audio.Albums.ALBUM_ID,
-                MediaStore.Audio.Albums.ALBUM,
-                MediaStore.Audio.Albums.ARTIST,
-                MediaStore.Audio.Albums.FIRST_YEAR,
-                MediaStore.Audio.Albums.LAST_YEAR,
-                MediaStore.Audio.Albums.NUMBER_OF_SONGS,
-                MediaStore.Audio.Albums.NUMBER_OF_SONGS_FOR_ARTIST,
-            )
+    private val genreProjection: Array<String> get() = arrayOf(
+        MediaStore.Audio.Genres._ID,
+        MediaStore.Audio.Genres.NAME
+    )
 
-            // Only in API >= 29.
-            if (Build.VERSION.SDK_INT > 29) {
-                temporaryProjection.add(3, MediaStore.Audio.Albums.ARTIST_ID)
-            }
-            return temporaryProjection.toTypedArray()
-        }
-
-    private suspend fun loadAlbums(): ArrayList<MutableMap<String, Any?>> =
+    private suspend fun loadGenres(): ArrayList<MutableMap<String, Any?>> =
         withContext(Dispatchers.IO) {
-            val cursor = resolver.query(uri, albumProjection, selection, null, sortType)
-            val albumList: ArrayList<MutableMap<String, Any?>> = ArrayList()
+            val cursor = resolver.query(uri, genreProjection, selection, null, sortType)
+            val genreList = arrayListOf<MutableMap<String, Any?>>()
 
-            // For each album inside this cursor take one and format into [Map<String, Any?>].
+            // For each genre inside this cursor take one and format into [Map<String, Any?>].
             while (cursor != null && cursor.moveToNext()) {
                val temporaryData: MutableMap<String, Any?> = HashMap()
-                for (albumMedia in cursor.columnNames) {
-                    temporaryData[albumMedia] = helper.loadAlbumItem(albumMedia, cursor)
+                for (genreMedia in cursor.columnNames) {
+                    temporaryData[genreMedia] = helper.loadGenreItem(genreMedia, cursor)
                 }
-
-                // In Android 10 and above [album_art] will return null, to avoid problems
-                // we will remove it.
-                val art = temporaryData["album_art"].toString()
-                if (art.isEmpty()) temporaryData.remove("album_art")
-                albumList.add(temporaryData)
+                val mediaCount = helper.getMediaCount(0, temporaryData["_id"].toString(), resolver)
+                temporaryData["num_of_songs"] = mediaCount
+                if (temporaryData["name"] != null && temporaryData["_id"] != 0) {
+                    genreList.add(temporaryData)
+                }
             }
             cursor?.close()
-            return@withContext albumList
-    }
+            return@withContext genreList
+        }
 
-    @Suppress("UNCHECKED_CAST")
-    fun initAlbums(
+    fun init(
         context: Context,
-        result: MethodChannel.Result?,
-        call: MethodCall?,
-        sink: EventChannel.EventSink?,
-        arguments: Map<*, *>?
+        result: MethodChannel.Result? = null,
+        call: MethodCall? = null,
+        sink: EventChannel.EventSink? = null,
+        arguments: Map<*, *>? = null
     ) {
         resolver = context.contentResolver
 
@@ -94,21 +79,21 @@ class AlbumsQuery: ViewModel() {
         val toQuery: Map<Int, ArrayList<String>> = pArguments["toQuery"] as Map<Int, ArrayList<String>>
         val toRemove: Map<Int, ArrayList<String>> = pArguments["toRemove"] as Map<Int, ArrayList<String>>
 
-        sortType = checkAlbumSortType(pSortType, pOrderType, pIgnoreCase)
+        sortType = checkGenreSortType(pSortType, pOrderType, pIgnoreCase)
         if (pLimit != null) sortType += " LIMIT $pLimit"
-        uri = checkAlbumUriType(pUri)
+        uri = checkGenreUriType(pUri)
 
         // For every row from "toQuery" keep the media containing the filter.
         for ((id: Int, values: ArrayList<String>) in toQuery) {
             for (value: String in values) {
-                selection += albumProjection[id] + " LIKE '%" + value + "%' " + "AND "
+                selection += genreProjection[id] + " LIKE '%" + value + "%' " + "AND "
             }
         }
 
         // For every row from "toRemove" remove the media containing the filter.
         for ((id: Int, values: ArrayList<String>) in toRemove) {
             for (value: String in values) {
-                selection += albumProjection[id] + " NOT LIKE '%" + value + "%' " + "AND "
+                selection += genreProjection[id] + " NOT LIKE '%" + value + "%' " + "AND "
             }
         }
         selection = selection.removeSuffix("AND ")
@@ -128,9 +113,9 @@ class AlbumsQuery: ViewModel() {
             return
         }
         viewModelScope.launch {
-            val resultAlbumList: ArrayList<MutableMap<String, Any?>> = loadAlbums()
-            sink?.success(resultAlbumList)
-            result?.success(resultAlbumList)
+            val resultGenreList: ArrayList<MutableMap<String, Any?>> = loadGenres()
+            sink?.success(resultGenreList)
+            result?.success(resultGenreList)
         }
     }
 }
