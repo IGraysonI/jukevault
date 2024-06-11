@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import com.igraysoni.jukevault_android.controller.PermissionController
+import com.igraysoni.jukevault_android.controller.QueryController
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -26,6 +27,7 @@ class JukevaultAndroidPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
   private lateinit var permissionController: PermissionController
+  private lateinit var queryController: QueryController
 
   // Main parameters
   private var activity: Activity? = null
@@ -42,6 +44,8 @@ class JukevaultAndroidPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
+    this.queryController = QueryController(context, call, result)
+
     // Both [activity] and [binding] are from [onAttachedToActivity]
     // If one of them are null, then something is really wrong
     if (activity == null || binding == null) {
@@ -69,7 +73,7 @@ class JukevaultAndroidPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         // Request permission
         permissionController.permissionRequest(activity!!, result)
       }
-      else -> result.notImplemented()
+      else -> queryController.call()
     }
   }
 
