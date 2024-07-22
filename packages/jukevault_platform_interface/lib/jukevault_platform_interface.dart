@@ -5,10 +5,10 @@
 // platforms in the `pubspec.yaml` at
 // https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
 
-import 'jukevault_platform_interface_platform_interface.dart';
+import 'jukevault_platform.dart';
 
 class JukevaultPlatformInterface {
   Future<String?> getPlatformVersion() {
-    return JukevaultPlatformInterfacePlatform.instance.getPlatformVersion();
+    return JukevaultPlatform.instance.getPlatformVersion();
   }
 }
