@@ -1,4 +1,11 @@
+import 'package:jukevault_platform_interface/src/enums/artwork_type_enum.dart';
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
+import 'package:jukevault_platform_interface/src/models/album_model.dart';
+import 'package:jukevault_platform_interface/src/models/artist_model.dart';
+import 'package:jukevault_platform_interface/src/models/artwork_model.dart';
+import 'package:jukevault_platform_interface/src/models/audio_model.dart';
+import 'package:jukevault_platform_interface/src/models/genre_model.dart';
+import 'package:jukevault_platform_interface/src/models/playlist_model.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'jukevault_platform_interface_method_channel.dart';
@@ -27,7 +34,7 @@ abstract class JukevaultPlatform extends PlatformInterface {
   Future<String?> getPlatformVersion() => throw UnimplementedError('platformVersion() has not been implemented.');
 
   /// Delete all artwork cached after using [queryArtwork]
-  Future<bool> clearCachedArtwork() => throw UnimplementedError('clearCachedArtwork() has not been implemented.');
+  Future<bool> clearCachedArtworks() => throw UnimplementedError('clearCachedArtwork() has not been implemented.');
 
   /// Query audios from the media store with optional [MediaFilter] filter
   Future<List<AudioModel>> queryAudios({MediaFilter? filter}) =>
@@ -52,7 +59,7 @@ abstract class JukevaultPlatform extends PlatformInterface {
   /// Query to return songs artwork
   Future<ArtworkModel?> queryArtwork(
     int id,
-    ArtworkType type, {
+    ArtworkTypeEnum type, {
     bool? fromAsset,
     bool? fromAppDir,
     MediaFilter? filter,

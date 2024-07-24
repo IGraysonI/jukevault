@@ -1,3 +1,14 @@
+import 'package:jukevault_platform_interface/src/enums/artwork_format_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/audio_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/media_directory_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/order_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/album_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/artist_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/audio_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/genre_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/playlist_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/uri_type_enum.dart';
+
 /// A filter that will be used with:
 ///
 /// * [queryAudios];
@@ -8,19 +19,19 @@
 /// * [queryArtwork].
 class MediaFilter {
   /// The audio sort type.
-  AudioSortType? audioSortType;
+  AudioSortTypeEnum? audioSortType;
 
   /// The album sort type.
-  AlbumSortType? albumSortType;
+  AlbumSortTypeEnum? albumSortType;
 
   /// The artist sort type.
-  ArtistSortType? artistSortType;
+  ArtistSortTypeEnum? artistSortType;
 
   /// The playlist sort type.
-  PlaylistSortType? playlistSortType;
+  PlaylistSortTypeEnum? playlistSortType;
 
   /// The genre sort type.
-  GenreSortType? genreSortType;
+  GenreSortTypeEnum? genreSortType;
 
   /// The list order type.
   ///
@@ -29,7 +40,7 @@ class MediaFilter {
   ///   * DESC_OR_GREATER.
   ///
   /// Note: If null, will be defined as [OrderType.ASC_OR_SMALLER].
-  OrderType orderType;
+  OrderTypeEnum orderType;
 
   /// The 'query' url type.
   ///
@@ -39,7 +50,7 @@ class MediaFilter {
   ///   * EXTERNAL_PRIMARY (Android only && API level 29).
   ///
   /// Note: If null, will be defined as [UriType.EXTERNAL].
-  UriType uriType;
+  UriTypeEnum uriType;
 
   /// Define if we should ignore the 'Case-sensitive'.
   ///
@@ -62,7 +73,7 @@ class MediaFilter {
   ///   * IS_AUDIOBOOK.
   ///
   /// Note: By default, the type is [empty]\(Will 'query' all types of audios).
-  Map<AudioType, bool> type;
+  Map<AudioTypeEnum, bool> type;
 
   /// Define where the plugin will query the medias:
   ///   * [DEFAULT]
@@ -72,7 +83,7 @@ class MediaFilter {
   ///     * Windows: The user '/Music' directory.
   ///   * [ASSETS] The app assets folder.
   ///   * [APP_DIR] The app 'private' directory.
-  MediaDirType? dirType;
+  MediaDirectoryTypeEnum? dirType;
 
   /// The 'objects'(titles, albums, artists, etc...) to be 'queried'.
   ///
@@ -125,7 +136,7 @@ class MediaFilter {
   ///   * PNG.
   ///
   /// Note: If null, will be defined as [ArtworkFormatType.JPEG].
-  ArtworkFormatType? artworkFormat;
+  ArtworkFormatTypeEnum? artworkFormat;
 
   /// The artwork [size].
   ///
@@ -186,8 +197,8 @@ class MediaFilter {
     this.playlistSortType,
     this.genreSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
@@ -219,8 +230,8 @@ class MediaFilter {
   MediaFilter.forAudios({
     this.audioSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
@@ -243,14 +254,12 @@ class MediaFilter {
   MediaFilter.forSongs({
     this.audioSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
-    this.type = const {
-      AudioType.IS_MUSIC: true,
-    },
+    this.type = const {AudioTypeEnum.IS_MUSIC: true},
     this.dirType,
   });
 
@@ -268,8 +277,8 @@ class MediaFilter {
   MediaFilter.forAlbums({
     this.albumSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
@@ -290,8 +299,8 @@ class MediaFilter {
   MediaFilter.forArtists({
     this.artistSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
@@ -312,8 +321,8 @@ class MediaFilter {
   MediaFilter.forPlaylists({
     this.playlistSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
@@ -334,8 +343,8 @@ class MediaFilter {
   MediaFilter.forGenres({
     this.genreSortType,
     this.limit,
-    this.orderType = OrderType.ASC_OR_SMALLER,
-    this.uriType = UriType.EXTERNAL,
+    this.orderType = OrderTypeEnum.ASC_OR_SMALLER,
+    this.uriType = UriTypeEnum.EXTERNAL,
     this.ignoreCase = true,
     this.toQuery = const {},
     this.toRemove = const {},
@@ -353,14 +362,14 @@ class MediaFilter {
   /// * [cacheTemporarily] is used to define if the artwork will be [cached]\(temporarily).
   /// * [overrideCache] is used to define if the artwork will be [overriden] if already exists.
   MediaFilter.forArtwork({
-    this.artworkFormat = ArtworkFormatType.JPEG,
+    this.artworkFormat = ArtworkFormatTypeEnum.JPEG,
     this.artworkSize = 100,
     this.artworkQuality = 50,
     this.cacheArtwork = true,
     this.cacheTemporarily = true,
     this.overrideCache = false,
-  })  : orderType = OrderType.ASC_OR_SMALLER,
-        uriType = UriType.EXTERNAL,
+  })  : orderType = OrderTypeEnum.ASC_OR_SMALLER,
+        uriType = UriTypeEnum.EXTERNAL,
         ignoreCase = true,
         toQuery = const {},
         toRemove = const {},
