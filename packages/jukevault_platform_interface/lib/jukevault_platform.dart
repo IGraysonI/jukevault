@@ -1,4 +1,4 @@
-import 'package:jukevault_platform_interface/src/enums/artwork_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/enums.dart';
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -7,6 +7,9 @@ import 'src/models/models.dart';
 
 // Constants
 export 'src/const/constants.dart';
+// Other
+export 'src/enums/enums.dart';
+export 'src/enums/sort_types/sort_types.dart';
 export 'src/filter/columns/media_columns.dart';
 // Internal methods
 export 'src/filter/media_filter.dart';

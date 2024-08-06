@@ -1,6 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:jukevault_platform_interface/src/enums/artwork_format_type_enum.dart';
-import 'package:jukevault_platform_interface/src/enums/artwork_type_enum.dart';
 
 import 'jukevault_platform.dart';
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:id3/id3.dart';
-import 'package:jukevault_platform_interface/src/enums/artwork_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/enums.dart';
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
 import 'package:jukevault_platform_interface/src/queries/query_helper.dart';
 

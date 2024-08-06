@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'enums.dart';
+
 /// Defines where artwork will be acquired.
 enum ArtworkTypeEnum {
   /// Artwork from Audios.

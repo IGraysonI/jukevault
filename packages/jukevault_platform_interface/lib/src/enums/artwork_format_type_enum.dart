@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'enums.dart';
+
 /// Defines the type of image.
 ///
 /// Read [JPEG] and [PNG] for know the difference between performance.

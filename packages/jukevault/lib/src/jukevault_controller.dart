@@ -1,5 +1,4 @@
 import 'package:jukevault_platform_interface/jukevault_platform.dart';
-import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
 
 /// Main method to use the [Jukevault] plugin.
 class OnAudioQuery {
@@ -61,7 +60,7 @@ class OnAudioQuery {
   ///    toRemove: const {},
   ///    type: const {AudioType.IS_MUSIC: true},
   ///  );
-  ///  return await _audioQuery.querySongs(filter: _filter);
+  ///  return await _jukevault.querySongs(filter: _filter);
   /// }
   /// ```
   ///
@@ -77,20 +76,12 @@ class OnAudioQuery {
     MediaFilter? filter,
     bool fromAsset = false,
     bool fromAppDir = false,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead")
-    // ignore: deprecated_member_use
-    SongSortType? sortType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") OrderType? orderType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") UriType? uriType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") bool? ignoreCase,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") String? path,
-  }) async {
-    return queryAudios(
-      filter: filter,
-      fromAsset: fromAsset,
-      fromAppDir: fromAppDir,
-    );
-  }
+  }) async =>
+      queryAudios(
+        filter: filter,
+        fromAsset: fromAsset,
+        fromAppDir: fromAppDir,
+      );
 
   /// Used to return audios info based in [AudioModel].
   ///
@@ -115,7 +106,7 @@ class OnAudioQuery {
   ///    toRemove: const {},
   ///    type: const {},
   ///  );
-  ///  return await _audioQuery.queryAudios(filter: _filter);
+  ///  return await _jukevault.queryAudios(filter: _filter);
   /// }
   /// ```
   ///
@@ -127,40 +118,12 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<AudioModel>> queryAudios({
     MediaFilter? filter,
     bool fromAsset = false,
     bool fromAppDir = false,
-  }) async {
-    //
-    // if (fromAsset || fromAppDir) {
-    //   return _audiosQuery.queryAudios(
-    //     filter: filter,
-    //     fromAsset: fromAsset,
-    //     fromAppDir: fromAppDir,
-    //   );
-    // }
-
-    //
-    return platform.queryAudios(filter: filter);
-  }
-
-  /// Used to observe(listen) the audios changes.
-  ///
-  /// Important:
-  ///   * If [filter] is null, will be used the [MediaFilter.forAudios].
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `✔️` | <br>
-  ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Stream<List<AudioModel>> observeAudios({MediaFilter? filter}) {
-    return platform.observeAudios(filter: filter);
-  }
+  }) async =>
+      platform.queryAudios(filter: filter);
 
   /// Used to return albums info.
   ///
@@ -174,45 +137,12 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<AlbumModel>> queryAlbums({
     MediaFilter? filter,
     bool fromAsset = false,
     bool fromAppDir = false,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") AlbumSortType? sortType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") OrderType? orderType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") UriType? uriType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") bool? ignoreCase,
-  }) async {
-    //
-    // if (fromAsset || fromAppDir) {
-    //   return _albumsQuery.queryAlbums(
-    //     await _audiosQuery.queryAudios(),
-    //     filter: filter,
-    //     fromAsset: fromAsset,
-    //     fromAppDir: fromAppDir,
-    //   );
-    // }
-
-    //
-    return platform.queryAlbums(filter: filter);
-  }
-
-  /// Used to observe(listen) the albums changes.
-  ///
-  /// Important:
-  ///   * If [filter] is null, will be used the [MediaFilter.forAlbums].
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `✔️` | <br>
-  ///
-  /// See more about [platform support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Stream<List<AlbumModel>> observeAlbums({MediaFilter? filter}) {
-    return platform.observeAlbums(filter: filter);
-  }
+  }) async =>
+      platform.queryAlbums(filter: filter);
 
   /// Used to return artists info.
   ///
@@ -226,45 +156,12 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<ArtistModel>> queryArtists({
     MediaFilter? filter,
     bool fromAsset = false,
     bool fromAppDir = false,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") ArtistSortType? sortType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") OrderType? orderType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") UriType? uriType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") bool? ignoreCase,
-  }) async {
-    //
-    // if (fromAsset || fromAppDir) {
-    //   return _artistsQuery.queryArtists(
-    //     await _audiosQuery.queryAudios(),
-    //     filter: filter,
-    //     fromAsset: fromAsset,
-    //     fromAppDir: fromAppDir,
-    //   );
-    // }
-
-    //
-    return platform.queryArtists(filter: filter);
-  }
-
-  /// Used to observe(listen) the artists changes.
-  ///
-  /// Important:
-  ///   * If [filter] is null, will be used the [MediaFilter.forArtists].
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `✔️` | <br>
-  ///
-  /// See more about [platform support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Stream<List<ArtistModel>> observeArtists({MediaFilter? filter}) {
-    return platform.observeArtists(filter: filter);
-  }
+  }) async =>
+      platform.queryArtists(filter: filter);
 
   /// Used to return playlists info.
   ///
@@ -277,32 +174,7 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<List<PlaylistModel>> queryPlaylists({
-    MediaFilter? filter,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") PlaylistSortType? sortType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") OrderType? orderType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") UriType? uriType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") bool? ignoreCase,
-  }) async {
-    return platform.queryPlaylists(filter: filter);
-  }
-
-  /// Used to observe(listen) the playlists changes.
-  ///
-  /// Important:
-  ///   * If [filter] is null, will be used the [MediaFilter.forAlbums].
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
-  /// See more about [platform support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Stream<List<PlaylistModel>> observePlaylists({MediaFilter? filter}) {
-    return platform.observePlaylists(filter: filter);
-  }
+  Future<List<PlaylistModel>> queryPlaylists({MediaFilter? filter}) async => platform.queryPlaylists(filter: filter);
 
   /// Used to return genres info.
   ///
@@ -316,44 +188,12 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<List<GenreModel>> queryGenres({
     MediaFilter? filter,
     bool fromAsset = false,
     bool fromAppDir = false,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") GenreSortType? sortType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") OrderType? orderType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") UriType? uriType,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") bool? ignoreCase,
-  }) async {
-    //
-    // if (fromAsset || fromAppDir) {
-    //   return _genresQuery.queryGenres(
-    //     filter: filter,
-    //     fromAsset: fromAsset,
-    //     fromAppDir: fromAsset,
-    //   );
-    // }
-
-    //
-    return platform.queryGenres(filter: filter);
-  }
-
-  /// Used to observe(listen) the genres changes.
-  ///
-  /// Important:
-  ///   * If [filter] is null, will be used the [MediaFilter.forGenres].
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `✔️` | <br>
-  ///
-  /// See more about [platform support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Stream<List<GenreModel>> observeGenres({MediaFilter? filter}) {
-    return platform.observeGenres(filter: filter);
-  }
+  }) async =>
+      platform.queryGenres(filter: filter);
 
   /// Used to return Songs Artwork.
   ///
@@ -381,23 +221,16 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<ArtworkModel?> queryArtwork(
     int id,
-    ArtworkType type, {
+    ArtworkTypeEnum type, {
     MediaFilter? filter,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead")
-    // ignore: deprecated_member_use
-    ArtworkFormat? format,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") int? size,
-    @Deprecated("Deprecated after [3.0.0]. Use [filter] instead") int? quality,
-  }) async {
-    return platform.queryArtwork(
-      id,
-      type,
-      filter: filter,
-    );
-  }
+  }) async =>
+      platform.queryArtwork(
+        id,
+        type,
+        filter: filter,
+      );
 
   //Playlist methods
 
@@ -407,7 +240,7 @@ class OnAudioQuery {
   ///
   /// * [name] the playlist name.
   /// * [author] the playlist author. (IOS only)
-  /// * [desc] the playlist description. (IOS only)
+  /// * [description] the playlist description. (IOS only)
   ///
   /// Important:
   ///
@@ -419,20 +252,18 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
   Future<int?> createPlaylist(
     String name, {
     String? author,
-    String? desc,
-  }) async {
-    return platform.createPlaylist(
-      name,
-      author: author,
-      desc: desc,
-    );
-  }
+    String? description,
+  }) async =>
+      platform.createPlaylist(
+        name,
+        author: author,
+        description: description,
+      );
 
-  /// Used to remove/delete a Playlist
+  /// Used to delete a Playlist
   ///
   /// Parameters:
   ///
@@ -444,10 +275,7 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> removePlaylist(int playlistId) async {
-    return platform.removePlaylist(playlistId);
-  }
+  Future<bool> deletePlaylist(int playlistId) async => platform.deletePlaylist(playlistId);
 
   /// Used to add a specific song/audio to a specific Playlist
   ///
@@ -462,10 +290,11 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> addToPlaylist(int playlistId, int audioId) async {
-    return platform.addToPlaylist(playlistId, audioId);
-  }
+  Future<bool> addToPlaylist(
+    int playlistId,
+    int audioId,
+  ) async =>
+      platform.addToPlaylist(playlistId, audioId);
 
   /// Used to remove a specific song/audio from a specific Playlist
   ///
@@ -480,10 +309,11 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> removeFromPlaylist(int playlistId, int audioId) async {
-    return platform.removeFromPlaylist(playlistId, audioId);
-  }
+  Future<bool> removeFromPlaylist(
+    int playlistId,
+    int audioId,
+  ) async =>
+      platform.removeFromPlaylist(playlistId, audioId);
 
   /// Used to change song/audio position from a specific Playlist
   ///
@@ -499,10 +329,12 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> moveItemTo(int playlistId, int from, int to) async {
-    return platform.moveItemTo(playlistId, from, to);
-  }
+  Future<bool> moveItemTo(
+    int playlistId,
+    int from,
+    int to,
+  ) async =>
+      platform.moveItemTo(playlistId, from, to);
 
   /// Used to rename a specific Playlist
   ///
@@ -517,10 +349,11 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> renamePlaylist(int playlistId, String newName) async {
-    return renamePlaylist(playlistId, newName);
-  }
+  Future<bool> renamePlaylist(
+    int playlistId,
+    String newName,
+  ) async =>
+      renamePlaylist(playlistId, newName);
 
   // Permissions methods
 
@@ -537,10 +370,7 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> permissionsStatus() async {
-    return platform.permissionsStatus();
-  }
+  Future<bool> permissionsStatus() async => platform.permissionStatus();
 
   /// Used to request Android permissions.
   ///
@@ -555,143 +385,5 @@ class OnAudioQuery {
   /// |:----------:|:----------:|:----------:|:----------:|
   /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<bool> permissionsRequest() async {
-    return platform.permissionsRequest();
-  }
-
-  // Device Information
-
-  /// Used to return Device Info
-  ///
-  /// Will return:
-  ///
-  /// * Device SDK.
-  /// * Device Release.
-  /// * Device Code.
-  /// * Device Type.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/PLATFORMS.md)
-  Future<DeviceModel> queryDeviceInfo() async {
-    return platform.queryDeviceInfo();
-  }
-
-  // Others
-
-  /// Used to scan the given [path]
-  ///
-  /// Will return:
-  ///
-  /// * A boolean indicating if the path was scanned or not.
-  ///
-  /// Usage:
-  ///
-  /// * When using the [Android] platform. After deleting a media using the [dart:io],
-  /// call this method to update the media. If the media was successfully and the path
-  /// not scanned. Will keep showing on [querySongs].
-  ///
-  /// Example:
-  ///
-  /// ```dart
-  /// OnAudioQuery _audioQuery = OnAudioQuery();
-  /// File file = File('path');
-  ///
-  /// try {
-  ///   if (file.existsSync()) {
-  ///     file.deleteSync();
-  ///     _audioQuery.scanMedia(file.path); // Scan the media 'path'
-  ///   }
-  /// } catch (e) {
-  ///   debugPrint('$e');
-  /// }
-  /// ```
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `❌` | `❌` | `❌` | <br>
-  ///
-  /// See more about [platforms support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Future<bool> scanMedia(String path) async {
-    return platform.scanMedia(path);
-  }
-
-  /// Used to check the observers(listeners) status of:
-  ///   * [observeAudios]
-  ///   * [observeAlbums]
-  ///   * [observePlaylists]
-  ///   * [observeArtists]
-  ///   * [observeGenres]
-  ///
-  /// Will return:
-  ///
-  /// * A [ObserversModel], every parameters from this model will return a boolean
-  /// indicating if the observers is **running** or not.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `✔️` | <br>
-  ///
-  /// See more about [platform support](https://github.com/LucJosin/on_audio_query/blob/main/on_audio_query/PLATFORMS.md)
-  Future<ObserversModel> observersStatus() async {
-    return platform.observersStatus();
-  }
-
-  // Deprecated methods
-
-  /// Deprecated after [3.0.0]. Use one of the [query] methods instead
-  @Deprecated(
-    "Deprecated after [3.0.0]. Use one of the [query] methods instead",
-  )
-  Future<List<SongModel>> queryAudiosFrom(
-    AudiosFromType type,
-    Object where, {
-    SongSortType? sortType,
-    OrderType? orderType,
-    bool? ignoreCase,
-  }) async {
-    throw const Deprecated('Deprecated after [3.0.0]');
-  }
-
-  /// Deprecated after [3.0.0]. Use one of the [query] methods instead
-  @Deprecated(
-    "Deprecated after [3.0.0]. Use one of the [query] methods instead",
-  )
-  Future<List<dynamic>> queryWithFilters(
-    String argsVal,
-    WithFiltersType withType, {
-    dynamic args,
-  }) {
-    throw const Deprecated('Deprecated after [3.0.0]');
-  }
-
-  /// Deprecated after [3.0.0]. Use one of the [query] methods instead
-  @Deprecated(
-    "Deprecated after [3.0.0]. Use one of the [query] methods instead",
-  )
-  Future<List<SongModel>> queryFromFolder(
-    String path, {
-    SongSortType? sortType,
-    OrderType? orderType,
-    UriType? uriType,
-  }) {
-    throw const Deprecated('Deprecated after [3.0.0]');
-  }
-
-  /// Deprecated after [3.0.0]
-  @Deprecated("Deprecated after [3.0.0]")
-  Future<List<String>> queryAllPath() {
-    throw const Deprecated('Deprecated after [3.0.0]');
-  }
+  Future<bool> permissionsRequest() async => platform.requestPermission();
 }
-
-class AudioModel {}

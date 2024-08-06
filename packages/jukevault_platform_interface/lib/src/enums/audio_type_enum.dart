@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'enums.dart';
+
 /// All types of audios that can be 'queried' from plugin.
 ///
 /// Note: Some types are platform specific only. If some platform don't support

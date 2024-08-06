@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'enums.dart';
+
 /// Define where the plugin will query the medias:
 ///   * [DEFAULT]
 ///     * Android: MediaStore

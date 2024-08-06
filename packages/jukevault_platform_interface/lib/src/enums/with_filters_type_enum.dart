@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'enums.dart';
+
 /// Args types for Audios.
 enum AudiosArgs {
   /// Uses song [TITLE] as filter.

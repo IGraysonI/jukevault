@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'enums.dart';
+
 /// Defines if query method will be in [EXTERNAL] or [INTERNAL] storage.
 enum UriTypeEnum {
   /// EXTERNAL storage.
