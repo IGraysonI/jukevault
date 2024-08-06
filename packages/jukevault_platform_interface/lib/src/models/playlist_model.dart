@@ -1,4 +1,4 @@
-import 'package:jukevault_platform_interface/src/models/media_model.dart';
+part of 'models.dart';
 
 /// [PlaylistModel] that contains all [Playlist] Information.
 class PlaylistModel extends MediaModel {

@@ -1,4 +1,5 @@
 // ignore_for_file: constant_identifier_names
+part of 'sort_types.dart';
 
 /// Defines the sort type used for [queryAlbums].
 enum AlbumSortTypeEnum {

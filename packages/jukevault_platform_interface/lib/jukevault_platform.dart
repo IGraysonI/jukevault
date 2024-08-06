@@ -1,14 +1,18 @@
 import 'package:jukevault_platform_interface/src/enums/artwork_type_enum.dart';
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
-import 'package:jukevault_platform_interface/src/models/album_model.dart';
-import 'package:jukevault_platform_interface/src/models/artist_model.dart';
-import 'package:jukevault_platform_interface/src/models/artwork_model.dart';
-import 'package:jukevault_platform_interface/src/models/audio_model.dart';
-import 'package:jukevault_platform_interface/src/models/genre_model.dart';
-import 'package:jukevault_platform_interface/src/models/playlist_model.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'jukevault_platform_interface_method_channel.dart';
+import 'src/models/models.dart';
+
+// Constants
+export 'src/const/constants.dart';
+export 'src/filter/columns/media_columns.dart';
+// Internal methods
+export 'src/filter/media_filter.dart';
+// Interface
+export 'src/interface/query_helper_interface.dart';
+export 'src/models/models.dart';
 
 abstract class JukevaultPlatform extends PlatformInterface {
   /// Constructs a JukevaultPlatformInterfacePlatform.

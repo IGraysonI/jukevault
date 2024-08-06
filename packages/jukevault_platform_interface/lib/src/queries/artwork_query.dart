@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:id3/id3.dart';
 import 'package:jukevault_platform_interface/src/enums/artwork_type_enum.dart';
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
-import 'package:jukevault_platform_interface/src/models/artwork_model.dart';
-import 'package:jukevault_platform_interface/src/models/audio_model.dart';
 import 'package:jukevault_platform_interface/src/queries/query_helper.dart';
+
+import '../models/models.dart';
 
 class ArtworkQuery {
   final QueryHelper _helper = QueryHelper();
@@ -26,7 +26,7 @@ class ArtworkQuery {
         id: id,
         temporary: filter.cacheTemporarily ?? true,
       );
-      if (cache != null) return cache;
+      return cache;
     }
 
     try {

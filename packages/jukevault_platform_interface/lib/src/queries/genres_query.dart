@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:id3/id3.dart';
-import 'package:jukevault_platform_interface/src/enums/sort_types/genre_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/sort_types.dart';
 import 'package:jukevault_platform_interface/src/extension/filter_extension.dart';
 import 'package:jukevault_platform_interface/src/extension/format_extension.dart';
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
-import 'package:jukevault_platform_interface/src/models/genre_model.dart';
+import 'package:jukevault_platform_interface/src/models/models.dart';
 import 'package:jukevault_platform_interface/src/queries/query_helper.dart';
 
 class GenresQuery {

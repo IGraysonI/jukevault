@@ -2,7 +2,8 @@ import 'dart:typed_data';
 
 import 'package:id3/id3.dart';
 import 'package:jukevault_platform_interface/src/interface/query_helper_interface.dart';
-import 'package:jukevault_platform_interface/src/models/artwork_model.dart';
+
+import '../models/models.dart';
 
 class QueryHelper extends QueryHelperInterface {
   @override

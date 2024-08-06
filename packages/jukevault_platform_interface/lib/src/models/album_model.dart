@@ -1,4 +1,4 @@
-import 'package:jukevault_platform_interface/src/models/media_model.dart';
+part of 'models.dart';
 
 /// [AlbumModel] that contains all [Album] Information.
 class AlbumModel extends MediaModel {

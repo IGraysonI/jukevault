@@ -1,8 +1,4 @@
-import 'package:jukevault_platform_interface/src/models/album_model.dart';
-import 'package:jukevault_platform_interface/src/models/artist_model.dart';
-import 'package:jukevault_platform_interface/src/models/audio_model.dart';
-import 'package:jukevault_platform_interface/src/models/genre_model.dart';
-import 'package:jukevault_platform_interface/src/models/playlist_model.dart';
+import '../models/models.dart';
 
 /// Used to convert a [List<dynamic>] into a Model.
 ///

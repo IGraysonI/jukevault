@@ -1,8 +1,6 @@
 import 'package:jukevault_platform_interface/src/filter/media_filter.dart';
-import 'package:jukevault_platform_interface/src/models/album_model.dart';
-import 'package:jukevault_platform_interface/src/models/artist_model.dart';
-import 'package:jukevault_platform_interface/src/models/audio_model.dart';
-import 'package:jukevault_platform_interface/src/models/genre_model.dart';
+
+import '../models/models.dart';
 
 extension OnMediaFilter on List<Map> {
   List<T> mediaFilter<T>(

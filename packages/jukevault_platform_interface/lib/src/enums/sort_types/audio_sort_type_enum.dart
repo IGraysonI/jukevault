@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+part of 'sort_types.dart';
+
 /// Defines the sort type used for [queryAudios].
 enum AudioSortTypeEnum {
   /// [TITLE] will return song list using [title] as sort param.

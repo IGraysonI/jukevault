@@ -1,6 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:jukevault_platform_interface/src/models/media_model.dart';
+part of 'models.dart';
 
 /// [ArtworkModel] that contains all [Image] information.
 class ArtworkModel extends MediaModel {

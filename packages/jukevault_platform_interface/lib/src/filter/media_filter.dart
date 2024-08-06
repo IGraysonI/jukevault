@@ -2,11 +2,7 @@ import 'package:jukevault_platform_interface/src/enums/artwork_format_type_enum.
 import 'package:jukevault_platform_interface/src/enums/audio_type_enum.dart';
 import 'package:jukevault_platform_interface/src/enums/media_directory_type_enum.dart';
 import 'package:jukevault_platform_interface/src/enums/order_type_enum.dart';
-import 'package:jukevault_platform_interface/src/enums/sort_types/album_sort_type_enum.dart';
-import 'package:jukevault_platform_interface/src/enums/sort_types/artist_sort_type_enum.dart';
-import 'package:jukevault_platform_interface/src/enums/sort_types/audio_sort_type_enum.dart';
-import 'package:jukevault_platform_interface/src/enums/sort_types/genre_sort_type_enum.dart';
-import 'package:jukevault_platform_interface/src/enums/sort_types/playlist_sort_type_enum.dart';
+import 'package:jukevault_platform_interface/src/enums/sort_types/sort_types.dart';
 import 'package:jukevault_platform_interface/src/enums/uri_type_enum.dart';
 
 /// A filter that will be used with:

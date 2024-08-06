@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:id3/id3.dart';
-import 'package:jukevault_platform_interface/src/models/artwork_model.dart';
+import 'package:jukevault_platform_interface/src/models/models.dart';
 
 /// A query helper interface..
 abstract class QueryHelperInterface {
