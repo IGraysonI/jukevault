@@ -33,6 +33,7 @@ flutter:
   plugin:
     platforms:
       android:
+        default_package: jukevault_android
         package: com.igraysoni.jukevault
         pluginClass: JukevaultPlugin
       # ios:

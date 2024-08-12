@@ -2,14 +2,15 @@ group = "com.igraysoni.jukevault_android"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "1.7.10"
+    ext.kotlin_version = "2.0.10"
+    ext.gradle_version = "8.2.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("com.android.tools.build:gradle:$gradle_version")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
@@ -52,7 +53,8 @@ android {
     dependencies {
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.1.0")
-        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1"
+        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4"
+        implementation 'androidx.core:core-ktx:1.9.0'
         // For getting "lyrics" from the music file
 //        compile 'net.jthink:jaudiotagger:3.0.1'
         implementation "net.jthink:jaudiotagger:3.0.1"
