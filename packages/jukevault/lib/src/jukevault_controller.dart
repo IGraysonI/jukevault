@@ -1,7 +1,7 @@
 import 'package:jukevault_platform_interface/jukevault_platform.dart';
 
 /// Main method to use the [Jukevault] plugin.
-class OnAudioQuery {
+class JukeVault {
   /// The platform interface that drives this plugin
   static JukevaultPlatform get platform => JukevaultPlatform.instance;
 
