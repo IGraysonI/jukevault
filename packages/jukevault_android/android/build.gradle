@@ -52,6 +52,9 @@ android {
     }
 
     dependencies {
+        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4"
+        implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.4"
+        implementation 'androidx.core:core-ktx:1.13.1'
         implementation "net.jthink:jaudiotagger:3.0.1"
         implementation "androidx.multidex:multidex:2.0.1"
     }
