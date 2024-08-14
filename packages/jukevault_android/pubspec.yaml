@@ -1,0 +1,31 @@
+name: jukevault_android
+description: Android implementation of the jukevault plugin.
+version: 0.0.1
+publish_to: 'none' 
+
+environment:
+  #TODO: update version
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=2.5.0"
+
+dependencies:
+  jukevault_platform_interface:
+    path: ../jukevault_platform_interface
+
+  # Flutter
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  # Flutter
+  flutter_lints: ^2.0.1
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    implements: jukevault
+    platforms:
+      android:
+        package: com.igraysonl.jukevault
+        pluginClass: JukevaultPlugin
