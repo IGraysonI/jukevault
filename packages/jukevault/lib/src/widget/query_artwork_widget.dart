@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jukevault/src/jukevault_controller.dart';
-import 'package:jukevault_platform_interface/jukevault_platform.dart';
+import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
+
+import '../jukevault_controller.dart';
 
 /// Widget that will help to "query" artwork for song/album.
 ///
@@ -15,7 +16,7 @@ class QueryArtworkWidget extends StatelessWidget {
   /// Used to define artwork [type].
   ///
   /// Opts: [AUDIO] and [ALBUM].
-  final ArtworkTypeEnum type;
+  final ArtworkType type;
 
   /// Used to define artwork [formatType].
   ///
@@ -24,7 +25,7 @@ class QueryArtworkWidget extends StatelessWidget {
   /// Important:
   ///
   /// * If [formatType] is null, will be set to [JPEG].
-  final ArtworkFormatTypeEnum? formatType;
+  final ArtworkFormatType? formatType;
 
   /// Used to define artwork [size].
   ///
@@ -291,26 +292,28 @@ class QueryArtworkWidget extends StatelessWidget {
     this.frameBuilder,
   }) : super(key: key);
 
-  JukeVault get _audioQuery => JukeVault();
+  Jukevault get _audioQuery => Jukevault();
 
-  Widget Function(dynamic, dynamic, dynamic) _handleImageError() => (context, exception, stackTrace) =>
-      nullArtworkWidget ??
-      const Icon(
-        Icons.image_not_supported,
-        size: 50,
-      );
+  Widget Function(dynamic, dynamic, dynamic) _handleImageError() => (
+        context,
+        exception,
+        stackTrace,
+      ) =>
+          nullArtworkWidget ?? const Icon(Icons.image_not_supported, size: 50);
 
   @override
   Widget build(BuildContext context) {
     if (quality != null && quality! > 100) {
-      throw Exception('[quality] value cannot be greater than [100]');
+      throw Exception(
+        '[quality] value cannot be greater than [100]',
+      );
     }
     return FutureBuilder<ArtworkModel?>(
       future: _audioQuery.queryArtwork(
         id,
         type,
         filter: MediaFilter.forArtwork(
-          artworkFormat: formatType ?? ArtworkFormatTypeEnum.JPEG,
+          artworkFormat: formatType ?? ArtworkFormatType.JPEG,
           artworkSize: size ?? 100,
           artworkQuality: quality ?? 50,
           cacheArtwork: cacheArtwork ?? true,
@@ -341,7 +344,7 @@ class QueryArtworkWidget extends StatelessWidget {
 
         // No artwork was found or the bytes are empty.
         Uint8List? artwork = item.data?.artwork;
-        if (item.data == null || artwork!.isEmpty) {
+        if (item.data == null || artwork == null || artwork.isEmpty) {
           return nullArtworkWidget ??
               const Icon(
                 Icons.image_not_supported,

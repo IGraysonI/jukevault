@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:jukevault/jukevault.dart';
 
 class MainController {
-  final JukeVault query = JukeVault();
+  final Jukevault query = Jukevault();
 
   bool get hasPermission => _hasPermission;
   bool get hasError => _hasError;
   bool _hasPermission = false;
   bool _hasError = false;
 
-  /// Check if the plugin has permission to read the library.
   void checkPermisison() async {
+    // Check if the plugin has permission to read the library.
     try {
       _hasPermission = await query.permissionsStatus();
 
@@ -26,14 +26,17 @@ class MainController {
     }
   }
 
-  /// Request permission to read the library.
   Function() requestPermission(BuildContext context) => () async {
         bool r = hasPermission ? hasPermission : await query.permissionsRequest();
         SnackBar snackBar = SnackBar(
           content: Row(
             children: [
-              Icon(r ? Icons.done : Icons.error_outline_rounded),
-              const SizedBox(width: 18),
+              Icon(
+                r ? Icons.done : Icons.error_outline_rounded,
+              ),
+              const SizedBox(
+                width: 18,
+              ),
               Text(
                 r ? 'The plugin has permission!' : 'The plugin has no permission!',
                 style: TextStyle(
@@ -44,8 +47,6 @@ class MainController {
           ),
           backgroundColor: r ? Colors.green : Colors.red,
         );
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       };
 }

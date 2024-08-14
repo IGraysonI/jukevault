@@ -1,5 +1,3 @@
-.fuse*
-
 .DS_Store
 .dart_tool/
 
@@ -11,18 +9,17 @@ build/
 pubspec.lock
 .idea/*
 
-
 .flutters
 .flutter-plugins-dependencies
 
 .atom/
 .idea/
+.vscode/
 
 .packages
 .pub/
 .dart_tool/
 pubspec.lock
-pubspec_overrides.yaml
 flutter_export_environment.sh
 
 examples/all_plugins/pubspec.yaml

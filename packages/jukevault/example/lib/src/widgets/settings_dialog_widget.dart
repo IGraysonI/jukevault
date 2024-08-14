@@ -6,9 +6,13 @@ void showSettingsDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: borderRadius),
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius,
+      ),
       backgroundColor: Theme.of(context).primaryColor,
-      title: const Center(child: Text("Settings")),
+      title: const Center(
+        child: Text("Settings"),
+      ),
       content: ConstrainedBox(
         constraints: const BoxConstraints(
           minHeight: 40,
@@ -20,14 +24,20 @@ void showSettingsDialog(BuildContext context) {
           horizontalTitleGap: 0,
           title: const Text('Delete all cache'),
           leading: const Icon(Icons.cached_rounded),
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+          ),
           onTap: () async {
-            bool result = await JukeVault.clearCachedArtworks();
+            bool result = await Jukevault.clearCachedArtworks();
             SnackBar snackBar = SnackBar(
               content: Row(
                 children: [
-                  Icon(result ? Icons.done : Icons.error_outline_rounded),
-                  const SizedBox(width: 18),
+                  Icon(
+                    result ? Icons.done : Icons.error_outline_rounded,
+                  ),
+                  const SizedBox(
+                    width: 18,
+                  ),
                   Text(
                     result ? 'All artworks have been deleted' : 'Oops, Something went wrong!',
                     style: TextStyle(
@@ -39,9 +49,7 @@ void showSettingsDialog(BuildContext context) {
               backgroundColor: result ? Colors.green : Colors.red,
             );
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackBar);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
         ),
       ),

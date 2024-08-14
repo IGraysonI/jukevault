@@ -1,10 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:jukevault_platform_interface/src/filter/columns/album_columns.dart';
-import 'package:jukevault_platform_interface/src/filter/columns/artist_columns.dart';
-import 'package:jukevault_platform_interface/src/filter/columns/audio_columns.dart';
-import 'package:jukevault_platform_interface/src/filter/columns/genre_columns.dart';
-import 'package:jukevault_platform_interface/src/filter/columns/playlist_columns.dart';
+import '../../controllers/columns_controller.dart';
 
 /// All media columns used with [MediaFilter].
 ///
@@ -21,6 +17,8 @@ import 'package:jukevault_platform_interface/src/filter/columns/playlist_columns
 ///   MediaColumns.Audio.ALBUM,
 /// ];
 /// ```
+///
+/// See: [MediaFilter][1] to learn more about media filter & columns.
 // TODO: Add 'MediaFilter' link.
 abstract class MediaColumns {
   /// All audio columns used with [MediaFilter].

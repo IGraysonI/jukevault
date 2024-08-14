@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+part of columns_controller;
+
 /// All artist columns used with [MediaFilter].
 class ArtistColumns {
   /// The artist [ID].

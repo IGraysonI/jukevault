@@ -1,9 +1,17 @@
-import 'package:jukevault_platform_interface/jukevault_platform.dart';
+import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
 
-/// Main method to use the [Jukevault] plugin.
-class JukeVault {
+/// Main method to use the [jukevault] plugin.
+///
+/// Example:
+///
+/// Init the plugin using:
+///
+/// ```dart
+/// final Jukevault _jukevault = Jukevault();
+/// ```
+class Jukevault {
   /// The platform interface that drives this plugin
-  static JukevaultPlatform get platform => JukevaultPlatform.instance;
+  static JukevaultPlatformInterface get platform => JukevaultPlatformInterface.instance;
 
   /// The default path used to store or cache the 'queried' images/artworks.
   ///
@@ -50,8 +58,9 @@ class JukeVault {
   ///
   /// ```dart
   /// Future<List<AudioModel>> getAllSongs() async {
+  ///  // Default filter.
   ///  MediaFilter _filter = MediaFilter.forSongs(
-  ///    songSortType: SongSortTypeEnum.TITLE,
+  ///    songSortType: SongSortType.TITLE,
   ///    limit: 30,
   ///    orderType: OrderType.ASC_OR_SMALLER,
   ///    uriType: UriType.EXTERNAL,
@@ -109,15 +118,6 @@ class JukeVault {
   ///  return await _jukevault.queryAudios(filter: _filter);
   /// }
   /// ```
-  ///
-  /// * Using [FutureBuilder]: [Plugin example][1]
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
-  ///
   Future<List<AudioModel>> queryAudios({
     MediaFilter? filter,
     bool fromAsset = false,
@@ -130,12 +130,6 @@ class JukeVault {
   /// Important:
   ///   * If [filter] is null, will be used the [MediaFilter.forAlbums].
   ///   * If [fromAsset] is null, will be set to false.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
   ///
   Future<List<AlbumModel>> queryAlbums({
     MediaFilter? filter,
@@ -150,12 +144,6 @@ class JukeVault {
   ///   * If [filter] is null, will be used the [MediaFilter.forArtists].
   ///   * If [fromAsset] is null, will be set to false.
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
-  ///
   Future<List<ArtistModel>> queryArtists({
     MediaFilter? filter,
     bool fromAsset = false,
@@ -168,12 +156,6 @@ class JukeVault {
   /// Important:
   ///   * If [filter] is null, will be used the [MediaFilter.forPlaylists].
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
   Future<List<PlaylistModel>> queryPlaylists({MediaFilter? filter}) async => platform.queryPlaylists(filter: filter);
 
   /// Used to return genres info.
@@ -181,12 +163,6 @@ class JukeVault {
   /// Important:
   ///   * If [filter] is null, will be used the [MediaFilter.forGenres].
   ///   * If [fromAsset] is null, will be set to false.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `✔️` | `✔️` | <br>
   ///
   Future<List<GenreModel>> queryGenres({
     MediaFilter? filter,
@@ -215,15 +191,9 @@ class JukeVault {
   /// * If [format] is null, will be set to [JPEG] for better performance.
   /// * If [size] is null, will be set to [200] for better performance
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
   Future<ArtworkModel?> queryArtwork(
     int id,
-    ArtworkTypeEnum type, {
+    ArtworkType type, {
     MediaFilter? filter,
   }) async =>
       platform.queryArtwork(
@@ -232,7 +202,7 @@ class JukeVault {
         filter: filter,
       );
 
-  //Playlist methods
+  // ---------- Playlist methods ----------
 
   /// Used to create a Playlist
   ///
@@ -240,40 +210,28 @@ class JukeVault {
   ///
   /// * [name] the playlist name.
   /// * [author] the playlist author. (IOS only)
-  /// * [description] the playlist description. (IOS only)
+  /// * [desc] the playlist description. (IOS only)
   ///
   /// Important:
   ///
   /// * This method create a playlist using [External Storage], all apps will be able to see this playlist
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
   Future<int?> createPlaylist(
     String name, {
     String? author,
-    String? description,
+    String? desc,
   }) async =>
       platform.createPlaylist(
         name,
         author: author,
-        description: description,
+        desc: desc,
       );
 
-  /// Used to delete a Playlist
+  /// Used to remove/delete a Playlist
   ///
   /// Parameters:
   ///
   /// * [playlistId] is used to check if Playlist exist.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
   Future<bool> deletePlaylist(int playlistId) async => platform.deletePlaylist(playlistId);
 
@@ -283,12 +241,6 @@ class JukeVault {
   ///
   /// * [playlistId] is used to check if Playlist exist.
   /// * [audioId] is used to add specific audio to Playlist.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
   Future<bool> addToPlaylist(
     int playlistId,
@@ -302,12 +254,6 @@ class JukeVault {
   ///
   /// * [playlistId] is used to check if Playlist exist.
   /// * [audioId] is used to remove specific audio from Playlist.
-  ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
   ///
   Future<bool> removeFromPlaylist(
     int playlistId,
@@ -323,12 +269,6 @@ class JukeVault {
   /// * [from] is the old position from a audio/song.
   /// * [to] is the new position from a audio/song.
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
   Future<bool> moveItemTo(
     int playlistId,
     int from,
@@ -343,19 +283,13 @@ class JukeVault {
   /// * [playlistId] is used to check if Playlist exist.
   /// * [newName] is used to add a new name to a Playlist.
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
   Future<bool> renamePlaylist(
     int playlistId,
     String newName,
   ) async =>
       renamePlaylist(playlistId, newName);
 
-  // Permissions methods
+  // ---------- Permission methods ----------
 
   /// Used to check Android permissions status
   ///
@@ -364,13 +298,7 @@ class JukeVault {
   /// * This method will always return a bool.
   /// * If return true `[READ]` and `[WRITE]` permissions is Granted, else `[READ]` and `[WRITE]` is Denied.
   ///
-  /// Platforms:
-  ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
-  ///
-  Future<bool> permissionsStatus() async => platform.permissionStatus();
+  Future<bool> permissionsStatus() async => platform.permissionsStatus();
 
   /// Used to request Android permissions.
   ///
@@ -379,11 +307,49 @@ class JukeVault {
   /// * This method will always return a bool.
   /// * If return true `[READ]` and `[WRITE]` permissions is Granted, else `[READ]` and `[WRITE]` is Denied.
   ///
-  /// Platforms:
+  Future<bool> permissionsRequest() async => platform.permissionsRequest();
+
+  // ---------- Device methods ----------
+
+  /// Used to return Device Info
   ///
-  /// |`   Android   `|`   IOS   `|`   Web   `|`   Windows   `|
-  /// |:----------:|:----------:|:----------:|:----------:|
-  /// | `✔️` | `✔️` | `❌` | `❌` | <br>
+  /// Will return:
   ///
-  Future<bool> permissionsRequest() async => platform.requestPermission();
+  /// * Device SDK.
+  /// * Device Release.
+  /// * Device Code.
+  /// * Device Type.
+  ///
+  Future<DeviceModel> queryDeviceInfo() async => platform.queryDeviceInfo();
+
+  // ---------- Other methods ----------
+
+  /// Used to scan the given [path]
+  ///
+  /// Will return:
+  ///
+  /// * A boolean indicating if the path was scanned or not.
+  ///
+  /// Usage:
+  ///
+  /// * When using the [Android] platform. After deleting a media using the [dart:io],
+  /// call this method to update the media. If the media was successfully and the path
+  /// not scanned. Will keep showing on [querySongs].
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// Jukevault _jukevault = Jukevault();
+  /// File file = File('path');
+  ///
+  /// try {
+  ///   if (file.existsSync()) {
+  ///     file.deleteSync();
+  ///     _jukevault.scanMedia(file.path); // Scan the media 'path'
+  ///   }
+  /// } catch (e) {
+  ///   debugPrint('$e');
+  /// }
+  /// ```
+  Future<bool> scanMedia(String path) async => platform.scanMedia(path);
 }

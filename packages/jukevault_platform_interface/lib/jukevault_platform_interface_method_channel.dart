@@ -1,12 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 
-import 'jukevault_platform.dart';
+import 'jukevault_platform_interface.dart';
 
-const String _channelName = "com.igraysoni.jukevault_android";
+const String _channelName = 'com.igraysonl.jukevault';
 const MethodChannel _channel = MethodChannel(_channelName);
 
-/// An implementation of [JukevaultPlatform] that uses method channels.
-class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
+/// An implementation of [JukevaultPlatformInterface] that uses method channels.
+class JukevaultPlatformInterfaceMethodChannel extends JukevaultPlatformInterface {
   /// The MethodChannel that is being used by this implementation of the plugin.
   MethodChannel get channel => _channel;
 
@@ -28,7 +30,10 @@ class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
     // Convert the 'AudioType' into 'int'.
     // The 'true' and 'false' value into '1' or '2'.
     Map<int, int> fixedMap = {};
-    filter.type.forEach((key, value) => fixedMap[key.index] = value == true ? 1 : 0);
+    filter.type.forEach((key, value) {
+      //
+      fixedMap[key.index] = value == true ? 1 : 0;
+    });
 
     // Invoke the channel.
     final List<dynamic> resultSongs = await _channel.invokeMethod(
@@ -152,7 +157,7 @@ class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
   @override
   Future<ArtworkModel?> queryArtwork(
     int id,
-    ArtworkTypeEnum type, {
+    ArtworkType type, {
     bool? fromAsset,
     bool? fromAppDir,
     MediaFilter? filter,
@@ -166,41 +171,47 @@ class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
       {
         "type": type.index,
         "id": id,
-        "format": filter.artworkFormat?.index ?? ArtworkFormatTypeEnum.JPEG.index,
+        "format": filter.artworkFormat?.index ?? ArtworkFormatType.JPEG.index,
         "size": filter.artworkSize ?? 100,
         "quality": (filter.artworkQuality != null && filter.artworkQuality! <= 100) ? filter.artworkQuality : 50,
         "cacheArtwork": filter.cacheArtwork ?? true,
         "cacheTemporarily": filter.cacheTemporarily ?? true,
         "overrideCache": filter.overrideCache ?? false,
       },
-    ).then((resultArtwork) => ArtworkModel(resultArtwork));
+    ).then(
+      (resultArtwork) => ArtworkModel(resultArtwork),
+    );
   }
 
   @override
   Future<int?> createPlaylist(
     String name, {
     String? author,
-    String? description,
+    String? desc,
   }) async =>
       await _channel.invokeMethod(
         "createPlaylist",
         {
           "playlistName": name,
           "playlistAuthor": author,
-          "playlistDescripction": description,
+          "playlistDesc": desc,
         },
       );
 
   @override
   Future<bool> deletePlaylist(int playlistId) async => await _channel.invokeMethod(
-        "removePlaylist",
+        "deletePlaylist",
         {
           "playlistId": playlistId,
         },
       );
 
   @override
-  Future<bool> addToPlaylist(int playlistId, int audioId) async => await _channel.invokeMethod(
+  Future<bool> addToPlaylist(
+    int playlistId,
+    int audioId,
+  ) async =>
+      await _channel.invokeMethod(
         "addToPlaylist",
         {
           "playlistId": playlistId,
@@ -209,7 +220,11 @@ class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
       );
 
   @override
-  Future<bool> removeFromPlaylist(int playlistId, int audioId) async => await _channel.invokeMethod(
+  Future<bool> removeFromPlaylist(
+    int playlistId,
+    int audioId,
+  ) async =>
+      await _channel.invokeMethod(
         "removeFromPlaylist",
         {
           "playlistId": playlistId,
@@ -218,7 +233,12 @@ class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
       );
 
   @override
-  Future<bool> moveItemTo(int playlistId, int from, int to) async => await _channel.invokeMethod(
+  Future<bool> moveItemTo(
+    int playlistId,
+    int from,
+    int to,
+  ) async =>
+      await _channel.invokeMethod(
         "moveItemTo",
         {
           "playlistId": playlistId,
@@ -228,17 +248,28 @@ class MethodChannelJukevaultPlatformInterface extends JukevaultPlatform {
       );
 
   @override
-  Future<bool> renamePlaylist(int playlistId, String name) async => await _channel.invokeMethod(
+  Future<bool> renamePlaylist(
+    int playlistId,
+    String newName,
+  ) async =>
+      await _channel.invokeMethod(
         "renamePlaylist",
         {
           "playlistId": playlistId,
-          "newPlName": name,
+          "newPlName": newName,
         },
       );
 
   @override
-  Future<bool> permissionStatus() async => await _channel.invokeMethod("permissionStatus");
+  Future<bool> permissionsStatus() async => await _channel.invokeMethod("permissionsStatus");
 
   @override
-  Future<bool> requestPermission() async => await _channel.invokeMethod("permissionRequest");
+  Future<bool> permissionsRequest() async => await _channel.invokeMethod("permissionsRequest");
+
+  @override
+  Future<DeviceModel> queryDeviceInfo() async =>
+      _channel.invokeMethod("queryDeviceInfo").then((deviceResult) => DeviceModel(deviceResult));
+
+  @override
+  Future<bool> scanMedia(String path) async => await _channel.invokeMethod('scan', {"path": path});
 }
