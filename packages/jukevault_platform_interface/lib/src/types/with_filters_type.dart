@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-part of types_controller;
+part of 'with_filters_type.dart';
 
 /// Args types for Audios.
 enum AudiosArgs {

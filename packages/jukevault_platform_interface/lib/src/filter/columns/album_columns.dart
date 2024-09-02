@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-part of columns_controller;
+part of '../../controllers/columns_controller.dart';
 
 /// All album columns used with [MediaFilter].
 class AlbumColumns {

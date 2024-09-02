@@ -60,13 +60,13 @@ extension OnMediaFilter on List<Map> {
 
     // Define the type of list and return.
     switch (T) {
-      case AudioModel:
+      case AudioModel _:
         return map((e) => AudioModel(e)).toList() as List<T>;
-      case AlbumModel:
+      case AlbumModel _:
         return map((e) => AlbumModel(e)).toList() as List<T>;
-      case ArtistModel:
+      case ArtistModel _:
         return map((e) => ArtistModel(e)).toList() as List<T>;
-      case GenreModel:
+      case GenreModel _:
         return map((e) => GenreModel(e)).toList() as List<T>;
       default:
         return [];

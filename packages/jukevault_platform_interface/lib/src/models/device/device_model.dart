@@ -1,4 +1,4 @@
-part of models_controller;
+part of '../../controllers/models_controller.dart';
 
 /// [DeviceModel] that contains all [Device] Information.
 class DeviceModel {

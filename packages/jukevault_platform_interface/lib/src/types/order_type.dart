@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-part of types_controller;
+part of '../controllers/types_controller.dart';
 
 /// Defines the sort type used for all query methods.
 enum OrderType {

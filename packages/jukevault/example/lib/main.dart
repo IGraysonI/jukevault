@@ -16,7 +16,7 @@ void main() => runApp(
     );
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   @override
   State<Main> createState() => _MainState();
@@ -59,14 +59,10 @@ class _MainState extends State<Main> {
               'This plugin require: \nLibrary (IOS) and READ (Android) permissions.',
               textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _controller.hasError ? null : _controller.requestPermission(context),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-              ),
+              style: ElevatedButton.styleFrom(elevation: 0),
               child: const Text('Grant permission'),
             )
           ],

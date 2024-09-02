@@ -1,4 +1,4 @@
-part of models_controller;
+part of '../../controllers/models_controller.dart';
 
 /// [GenreModel] that contains all [Genre] Information.
 class GenreModel extends MediaModel {

@@ -1,4 +1,4 @@
-part of models_controller;
+part of '../../controllers/models_controller.dart';
 
 /// [ArtworkModel] that contains all [Image] information.
 class ArtworkModel extends MediaModel {
