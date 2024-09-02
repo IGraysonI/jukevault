@@ -1,13 +1,10 @@
 name: jukevault_example
 description: Demonstrates how to use the jukevault plugin.
-
-# The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: "none" 
 
 environment:
-  # Update
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -23,10 +20,10 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.1
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
-  flutter_lints: ^1.0.4
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
   integration_test:
