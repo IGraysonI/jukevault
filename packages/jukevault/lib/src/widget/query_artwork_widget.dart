@@ -267,7 +267,7 @@ class QueryArtworkWidget extends StatelessWidget {
   ///
   /// A simple example on how you can use the [queryArtwork].
   const QueryArtworkWidget({
-    Key? key,
+    super.key,
     required this.id,
     required this.type,
     this.formatType,
@@ -290,7 +290,7 @@ class QueryArtworkWidget extends StatelessWidget {
     this.nullArtworkWidget,
     this.errorBuilder,
     this.frameBuilder,
-  }) : super(key: key);
+  });
 
   Jukevault get _audioQuery => Jukevault();
 

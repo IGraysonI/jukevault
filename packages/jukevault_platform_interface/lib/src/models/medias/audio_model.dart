@@ -1,4 +1,4 @@
-part of models_controller;
+part of '../../controllers/models_controller.dart';
 
 /// [AudioModel] that contains all [Song] Information.
 class AudioModel extends MediaModel {

@@ -28,15 +28,12 @@ class MainController {
 
   Function() requestPermission(BuildContext context) => () async {
         bool r = hasPermission ? hasPermission : await query.permissionsRequest();
+        if (!context.mounted) return;
         SnackBar snackBar = SnackBar(
           content: Row(
             children: [
-              Icon(
-                r ? Icons.done : Icons.error_outline_rounded,
-              ),
-              const SizedBox(
-                width: 18,
-              ),
+              Icon(r ? Icons.done : Icons.error_outline_rounded),
+              const SizedBox(width: 18),
               Text(
                 r ? 'The plugin has permission!' : 'The plugin has no permission!',
                 style: TextStyle(
@@ -47,6 +44,9 @@ class MainController {
           ),
           backgroundColor: r ? Colors.green : Colors.red,
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
       };
 }

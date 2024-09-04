@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-part of types_controller;
+part of '../controllers/types_controller.dart';
 
 /// Defines where artwork will be acquired.
 enum ArtworkType {

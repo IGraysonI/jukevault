@@ -1,4 +1,4 @@
-part of models_controller;
+part of '../../controllers/models_controller.dart';
 
 /// The default implementation/interface for all 'medias'.
 abstract class MediaModel {

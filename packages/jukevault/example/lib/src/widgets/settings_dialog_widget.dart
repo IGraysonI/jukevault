@@ -29,15 +29,12 @@ void showSettingsDialog(BuildContext context) {
           ),
           onTap: () async {
             bool result = await Jukevault.clearCachedArtworks();
+            if (!context.mounted) return;
             SnackBar snackBar = SnackBar(
               content: Row(
                 children: [
-                  Icon(
-                    result ? Icons.done : Icons.error_outline_rounded,
-                  ),
-                  const SizedBox(
-                    width: 18,
-                  ),
+                  Icon(result ? Icons.done : Icons.error_outline_rounded),
+                  const SizedBox(width: 18),
                   Text(
                     result ? 'All artworks have been deleted' : 'Oops, Something went wrong!',
                     style: TextStyle(
@@ -49,7 +46,9 @@ void showSettingsDialog(BuildContext context) {
               backgroundColor: result ? Colors.green : Colors.red,
             );
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(snackBar);
           },
         ),
       ),

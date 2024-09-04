@@ -5,7 +5,7 @@ import 'package:jukevault/jukevault.dart';
 import 'dialog_widget.dart';
 
 class QueryAudios extends StatefulWidget {
-  const QueryAudios({Key? key}) : super(key: key);
+  const QueryAudios({super.key});
 
   @override
   State<QueryAudios> createState() => _QueryAudiosState();
