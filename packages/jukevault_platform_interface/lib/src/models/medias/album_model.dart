@@ -2,7 +2,7 @@ part of '../../controllers/models_controller.dart';
 
 /// [AlbumModel] that contains all [Album] Information.
 class AlbumModel extends MediaModel {
-  AlbumModel(this._info) : super(_info['_id']);
+  AlbumModel(this._info) : super(_info['_id'] ?? 0);
 
   // The type dynamic is used for both but, the map is always based in [String, dynamic]
   final Map<dynamic, dynamic> _info;
