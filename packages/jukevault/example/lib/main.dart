@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jukevault_example/src/widgets/query_albums.dart';
 
 import 'main_controller.dart';
 import 'src/widgets/query_songs.dart';
@@ -71,18 +72,36 @@ class _MainState extends State<Main> {
 
   Widget queriesWidget(BuildContext context) => SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius,
-          ),
-          tileColor: Theme.of(context).primaryColor,
-          title: const Text('Static Query'),
-          trailing: const Icon(Icons.navigate_next_rounded),
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const QueryAudios(),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius,
+              ),
+              tileColor: Theme.of(context).primaryColor,
+              title: const Text('Audios Static Query'),
+              trailing: const Icon(Icons.navigate_next_rounded),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const QueryAudios(),
+                ),
+              ),
             ),
-          ),
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius,
+              ),
+              tileColor: Theme.of(context).primaryColor,
+              title: const Text('Albums Static Query'),
+              trailing: const Icon(Icons.navigate_next_rounded),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const QueryAlbums(),
+                ),
+              ),
+            ),
+          ],
         ),
       );
 

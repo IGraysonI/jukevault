@@ -133,18 +133,19 @@ class AlbumsQuery {
 
   Future<Map<String, Object?>> _formatAlbum(Map album, String data) async {
     // Get the number of audios from a album.
-    int numOfAudios = _audios.where((audio) {
-      if (audio.album != null && audio.album!.isNotEmpty) {
-        return audio.album! == album["Album"];
-      }
-      return false;
-    }).length;
+    // int numOfAudios = _audios.where((audio) {
+    //   if (audio.album != null && audio.album!.isNotEmpty) {
+    //     return audio.album! == album["Album"];
+    //   }
+    //   return false;
+    // }).length;
     return {
       "_id": "${album["Album"]}".generateId(),
       "album": album["Album"],
       "artist": "${album["Artist"]}",
       "artist_id": "${album["Artist"]}".generateId(),
-      "numsongs": numOfAudios,
+      // "numsongs": numOfAudios,
+      "numsongs": 9,
     };
   }
 }
