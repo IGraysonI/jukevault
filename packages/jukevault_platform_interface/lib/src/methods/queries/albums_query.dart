@@ -80,9 +80,10 @@ class AlbumsQuery {
         break;
 
       case AlbumSortType.NUM_OF_SONGS:
-        albums.sort(
-          (v1, v2) => v1.numOfSongs.compareTo(v2.numOfSongs),
-        );
+        final albumsWithNumOfSongs = albums.where((album) => album.numOfSongs != null).toList();
+        final albumsWithoutNumOfSongs = albums.where((album) => album.numOfSongs == null).toList();
+        albumsWithNumOfSongs.sort((v1, v2) => v1.numOfSongs!.compareTo(v2.numOfSongs!));
+        albums = albumsWithNumOfSongs + albumsWithoutNumOfSongs;
         break;
 
       default:
