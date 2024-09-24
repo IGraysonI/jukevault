@@ -2,6 +2,8 @@ part of '../../controllers/models_controller.dart';
 
 /// [AlbumModel] that contains all [Album] Information.
 class AlbumModel extends MediaModel {
+  // TODO: Null check exception, might need more detailed fix
+  // Null its not subtype of int
   AlbumModel(this._info) : super(_info['_id'] ?? 0);
 
   // The type dynamic is used for both but, the map is always based in [String, dynamic]
@@ -17,7 +19,7 @@ class AlbumModel extends MediaModel {
   int? get artistId => _info["artist_id"];
 
   /// Return album [numOfSongs]
-  int? get numOfSongs => _info["numsongs"];
+  int get numOfSongs => _info["numsongs"];
 
   /// Return a map with all [keys] and [values] from specific album.
   Map get getMap => _info;
