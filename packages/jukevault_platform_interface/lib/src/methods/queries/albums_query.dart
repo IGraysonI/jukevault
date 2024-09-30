@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:jukevault_platform_interface/jukevault_platform_interface.dart';
 
-import '../../extensions/filter_extension.dart';
 import '../../extensions/format_extension.dart';
 import '../helpers/query_helper_stub.dart';
 
@@ -10,7 +8,7 @@ class AlbumsQuery {
 
   // Default filter.
   final MediaFilter _defaultFilter = MediaFilter.forAlbums();
-  List<AudioModel> _audios = [];
+  final List<AudioModel> _audios = [];
 
   // Album projection.
   List<String?> projection = [
@@ -25,71 +23,71 @@ class AlbumsQuery {
   ];
 
   /// Method used to "query" all the albums and their informations.
-  Future<List<AlbumModel>> queryAlbums(
-    List<AudioModel> audios, {
-    MediaFilter? filter,
-    bool? fromAsset,
-    bool? fromAppDir,
-  }) async {
-    // If the parameters filter is null, use the default filter.
-    filter ??= _defaultFilter;
+  // Future<List<AlbumModel>> queryAlbums(
+  //   List<AudioModel> audios, {
+  //   MediaFilter? filter,
+  //   bool? fromAsset,
+  //   bool? fromAppDir,
+  // }) async {
+  //   // If the parameters filter is null, use the default filter.
+  //   filter ??= _defaultFilter;
 
-    //
-    _audios = audios;
+  //   //
+  //   _audios = audios;
 
-    // Retrive all (or limited) files path.
-    List<Map<String, Object>> instances = await _helper.getFiles(
-      fromAsset: fromAsset,
-      fromAppDir: fromAppDir,
-      limit: filter.limit,
-    );
+  //   // Retrive all (or limited) files path.
+  //   List<Map<String, Object>> instances = await _helper.getFiles(
+  //     fromAsset: fromAsset,
+  //     fromAppDir: fromAppDir,
+  //     limit: filter.limit,
+  //   );
 
-    // Since all the 'query' is made 'manually'. If we have multiple (100+) audio
-    // files, will take more than 10 seconds to load everything. So, we need to use
-    // the flutter isolate (compute) to load this files on another 'thread'.
-    List<Map<String, Object?>> computedAlbums = await compute(
-      _fetchListOfAlbums,
-      instances,
-    );
+  //   // Since all the 'query' is made 'manually'. If we have multiple (100+) audio
+  //   // files, will take more than 10 seconds to load everything. So, we need to use
+  //   // the flutter isolate (compute) to load this files on another 'thread'.
+  //   List<Map<String, Object?>> computedAlbums = await compute(
+  //     _fetchListOfAlbums,
+  //     instances,
+  //   );
 
-    // 'Run' the filter.
-    List<AlbumModel> albums = computedAlbums.mediaFilter<AlbumModel>(
-      filter,
-      projection,
-    );
+  //   // 'Run' the filter.
+  //   List<AlbumModel> albums = computedAlbums.mediaFilter<AlbumModel>(
+  //     filter,
+  //     projection,
+  //   );
 
-    // Now we sort the list based on [sortType].
-    //
-    // Some variables has a [Null] value, so we need use the [orEmpty] extension,
-    // this will return a empty string. Using a empty value to [compareTo] will bring
-    // all null values to start of the list so, we use this method to put at the end:
-    //
-    // ```dart
-    //  list.sort((v1, v2) => v1 == null ? 1 : 0);
-    // ```
-    switch (filter.albumSortType) {
-      case AlbumSortType.ALBUM:
-        albums.sort((v1, v2) => v1.album.isCase(filter!.ignoreCase).compareTo(v2.album.isCase(filter.ignoreCase)));
-        break;
+  //   // Now we sort the list based on [sortType].
+  //   //
+  //   // Some variables has a [Null] value, so we need use the [orEmpty] extension,
+  //   // this will return a empty string. Using a empty value to [compareTo] will bring
+  //   // all null values to start of the list so, we use this method to put at the end:
+  //   //
+  //   // ```dart
+  //   //  list.sort((v1, v2) => v1 == null ? 1 : 0);
+  //   // ```
+  //   switch (filter.albumSortType) {
+  //     case AlbumSortType.ALBUM:
+  //       albums.sort((v1, v2) => v1.album.isCase(filter!.ignoreCase).compareTo(v2.album.isCase(filter.ignoreCase)));
+  //       break;
 
-      case AlbumSortType.ARTIST:
-        albums.sort(
-          (v1, v2) =>
-              v1.artist.orEmpty.isCase(filter!.ignoreCase).compareTo(v2.artist.orEmpty.isCase(filter.ignoreCase)),
-        );
-        break;
+  //     case AlbumSortType.ARTIST:
+  //       albums.sort(
+  //         (v1, v2) =>
+  //             v1.artist.orEmpty.isCase(filter!.ignoreCase).compareTo(v2.artist.orEmpty.isCase(filter.ignoreCase)),
+  //       );
+  //       break;
 
-      case AlbumSortType.NUM_OF_SONGS:
-        albums.sort((v1, v2) => v1.numOfSongs.compareTo(v2.numOfSongs));
-        break;
+  //     case AlbumSortType.NUM_OF_SONGS:
+  //       albums.sort((v1, v2) => v1.numOfSongs.compareTo(v2.numOfSongs));
+  //       break;
 
-      default:
-        break;
-    }
+  //     default:
+  //       break;
+  //   }
 
-    // Now we sort the order of the list based on [orderType].
-    return filter.orderType.index == 1 ? albums.reversed.toList() : albums;
-  }
+  //   // Now we sort the order of the list based on [orderType].
+  //   return filter.orderType.index == 1 ? albums.reversed.toList() : albums;
+  // }
 
   // This method will be used on another isolate.
   Future<List<Map<String, Object?>>> _fetchListOfAlbums(
