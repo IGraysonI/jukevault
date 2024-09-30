@@ -145,7 +145,7 @@ class AlbumsQuery : ViewModel() {
             while (cursor != null && cursor.moveToNext()) {
                 val tempData: MutableMap<String, Any?> = HashMap()
                 for (albumMedia in cursor.columnNames) {
-                    tempData[albumMedia] = helper.  (albumMedia, cursor)
+                    tempData[albumMedia] = helper.loadAlbumItem(albumMedia, cursor)
                 }
                 // In Android 10 and above [album_art] will return null, to avoid problem,
                 // we remove it. Use [queryArtwork] instead.
