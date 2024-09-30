@@ -2,9 +2,7 @@ part of '../../controllers/models_controller.dart';
 
 /// [AlbumModel] that contains all [Album] Information.
 class AlbumModel extends MediaModel {
-  // TODO: Null check exception, might need more detailed fix
-  // Null its not subtype of int
-  AlbumModel(this._info) : super(_info['_id'] ?? 0);
+  AlbumModel(this._info) : super(_info['_id']);
 
   // The type dynamic is used for both but, the map is always based in [String, dynamic]
   final Map<dynamic, dynamic> _info;

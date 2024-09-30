@@ -1,6 +1,6 @@
 name: jukevault_platform_interface
 description: A common platform interface for the [jukevault] plugin.
-version: 0.0.2
+version: 0.0.3
 publish_to: 'none'
 
 environment:
