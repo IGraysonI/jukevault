@@ -69,18 +69,18 @@ extension OnIdGenerator on String {
   /// int finalId = int.parse(idAsString); //741111061050000
   /// ```
   int generateId() {
-    if (isEmpty) return 0;
+    if (isEmpty) return DateTime.now().millisecondsSinceEpoch;
 
     // Avoid problems with [title] less than 5.
     int itemLength = length > 5 ? 5 : length;
-    List tmpId = substring(0, itemLength).codeUnits;
+    List<int> tmpId = substring(0, itemLength).codeUnits;
     String idAsString = "";
     for (int item in tmpId) {
       if (idAsString.length == 15) break;
       idAsString += item.toString();
     }
 
-    // This will convert to a int value and at the same time complete the id.
+    // This will convert to an int value and at the same time complete the id.
     // If [idAsString] < 15, complete with [0].
     return int.parse(idAsString.padRight(15, "0"));
   }

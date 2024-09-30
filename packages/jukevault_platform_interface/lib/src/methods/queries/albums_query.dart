@@ -137,7 +137,7 @@ class AlbumsQuery {
       return false;
     }).length;
     return {
-      "_id": album["Album"] != null ? "${album["Album"]}".generateId() : DateTime.now().millisecondsSinceEpoch,
+      "_id": "${album["Album"]}".generateId(),
       "album": album["Album"],
       "artist": "${album["Artist"]}",
       "artist_id": "${album["Artist"]}".generateId(),
