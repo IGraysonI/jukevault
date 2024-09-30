@@ -33,6 +33,7 @@ class AlbumsQuery : ViewModel() {
     // Albums projection
     private val albumProjection: Array<String> get() : Array<String>  {
         val tmpProjection = arrayListOf(
+            MediaStore.Audio.Albums._ID,
             MediaStore.Audio.Albums.ALBUM_ID,
             MediaStore.Audio.Albums.ALBUM,
             MediaStore.Audio.Albums.ARTIST,
@@ -144,7 +145,7 @@ class AlbumsQuery : ViewModel() {
             while (cursor != null && cursor.moveToNext()) {
                 val tempData: MutableMap<String, Any?> = HashMap()
                 for (albumMedia in cursor.columnNames) {
-                    tempData[albumMedia] = helper.loadAlbumItem(albumMedia, cursor)
+                    tempData[albumMedia] = helper.  (albumMedia, cursor)
                 }
                 // In Android 10 and above [album_art] will return null, to avoid problem,
                 // we remove it. Use [queryArtwork] instead.
