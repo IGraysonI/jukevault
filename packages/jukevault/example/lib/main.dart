@@ -5,12 +5,12 @@ import 'main_controller.dart';
 import 'src/widgets/query_songs.dart';
 import 'src/widgets/settings_dialog_widget.dart';
 
+const BorderRadius borderRadius = BorderRadius.all(Radius.circular(10));
+
 void main() => runApp(
       MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.light().copyWith(
-          primaryColor: Colors.grey[200],
-        ),
+        theme: ThemeData.light().copyWith(primaryColor: Colors.grey[200]),
         darkTheme: ThemeData.dark(),
         home: const Main(),
       ),
@@ -24,10 +24,6 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  // Default border to all app.
-  final BorderRadius borderRadius = BorderRadius.circular(10);
-
-  // Controller.
   final MainController _controller = MainController();
 
   @override
@@ -39,9 +35,7 @@ class _MainState extends State<Main> {
   Widget titleWidget(BuildContext context, String title) => Align(
         alignment: Alignment.centerLeft,
         child: Padding(
-          padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * 0.06,
-          ),
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.06),
           child: Text(title),
         ),
       );
@@ -50,10 +44,7 @@ class _MainState extends State<Main> {
         margin: const EdgeInsets.only(top: 15),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         width: MediaQuery.of(context).size.width * 0.9,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: borderRadius,
-        ),
+        decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: borderRadius),
         child: Column(
           children: [
             const Text(
@@ -76,29 +67,21 @@ class _MainState extends State<Main> {
           shrinkWrap: true,
           children: [
             ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-              ),
+              shape: const RoundedRectangleBorder(borderRadius: borderRadius),
               tileColor: Theme.of(context).primaryColor,
               title: const Text('Audios Static Query'),
               trailing: const Icon(Icons.navigate_next_rounded),
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const QueryAudios(),
-                ),
+                MaterialPageRoute(builder: (_) => const QueryAudios()),
               ),
             ),
             ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-              ),
+              shape: const RoundedRectangleBorder(borderRadius: borderRadius),
               tileColor: Theme.of(context).primaryColor,
               title: const Text('Albums Static Query'),
               trailing: const Icon(Icons.navigate_next_rounded),
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const QueryAlbums(),
-                ),
+                MaterialPageRoute(builder: (_) => const QueryAlbums()),
               ),
             ),
           ],
@@ -108,11 +91,9 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          // Basic configurations
           elevation: 1.5,
           shadowColor: Colors.black.withOpacity(0.5),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          // Title
           title: Text(
             "Jukevault",
             style: TextStyle(
@@ -121,7 +102,6 @@ class _MainState extends State<Main> {
             ),
           ),
           centerTitle: true,
-          // Buttons
           actions: [
             IconButton(
               onPressed: () => showSettingsDialog(context),

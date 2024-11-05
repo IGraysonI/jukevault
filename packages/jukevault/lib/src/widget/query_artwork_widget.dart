@@ -292,7 +292,7 @@ class QueryArtworkWidget extends StatelessWidget {
     this.frameBuilder,
   });
 
-  Jukevault get _audioQuery => Jukevault();
+  Jukevault get _jukevault => Jukevault();
 
   Widget Function(dynamic, dynamic, dynamic) _handleImageError() => (
         context,
@@ -309,7 +309,7 @@ class QueryArtworkWidget extends StatelessWidget {
       );
     }
     return FutureBuilder<ArtworkModel?>(
-      future: _audioQuery.queryArtwork(
+      future: _jukevault.queryArtwork(
         id,
         type,
         filter: MediaFilter.forArtwork(

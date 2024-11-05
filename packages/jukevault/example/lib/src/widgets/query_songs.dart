@@ -12,7 +12,7 @@ class QueryAudios extends StatefulWidget {
 }
 
 class _QueryAudiosState extends State<QueryAudios> {
-  final Jukevault _audioQuery = Jukevault();
+  final Jukevault _jukevault = Jukevault();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -20,7 +20,6 @@ class _QueryAudiosState extends State<QueryAudios> {
           title: const Text("QueryExample"),
           elevation: 0,
           actions: [
-            // A 'Dialog' explaining about this 'constant' list.
             IconButton(
               onPressed: () => buildDialog(
                 context,
@@ -42,11 +41,7 @@ class _QueryAudiosState extends State<QueryAudios> {
             // toQuery: const {},
             // toRemove: const {},
             // type: const {AudioType.IS_MUSIC : true},
-            future: _audioQuery.queryAudios(
-              filter: MediaFilter.forAudios(
-                  // limit: 50,
-                  ),
-            ),
+            future: _jukevault.queryAudios(filter: MediaFilter.forAudios()),
             builder: (context, item) {
               // When you try 'query' without asking for [READ] permission the plugin
               // will throw a [PlatformException].
@@ -76,20 +71,14 @@ class _QueryAudiosState extends State<QueryAudios> {
               // List<SongModel> songs = item.data!;
               return ListView.builder(
                 itemCount: item.data!.length,
-                itemBuilder: (_, index) {
-                  // Normal list.
-                  return ListTile(
-                    title: Text(item.data![index].title),
-                    subtitle: Text(item.data![index].artist ?? '<Unknown>'),
-                    // This Widget will query/load image. Just add the id and type.
-                    // You can use/create your own widget/method using [queryArtwork].
-                    leading: QueryArtworkWidget(
-                      id: item.data![index].id,
-                      type: ArtworkType.AUDIO,
-                    ),
-                    onTap: () => debugPrint('${item.data![index]}'),
-                  );
-                },
+                itemBuilder: (_, index) => ListTile(
+                  title: Text(item.data![index].title),
+                  subtitle: Text(item.data![index].artist ?? '<Unknown>'),
+                  // This Widget will query/load image. Just add the id and type.
+                  // You can use/create your own widget/method using [queryArtwork].
+                  leading: QueryArtworkWidget(id: item.data![index].id, type: ArtworkType.AUDIO),
+                  onTap: () => debugPrint('${item.data![index]}'),
+                ),
               );
             },
           ),
