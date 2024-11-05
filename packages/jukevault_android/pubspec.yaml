@@ -9,11 +9,11 @@ environment:
 
 dependencies:
   jukevault_platform_interface:
-    path: ../jukevault_platform_interface
-    # git:
-    #   url: https://github.com/igraysoni/jukevault
-    #   path: packages/jukevault_platform_interface
-    #   ref: main
+    # path: ../jukevault_platform_interface
+    git:
+      url: https://github.com/igraysoni/jukevault
+      path: packages/jukevault_platform_interface
+      ref: main
 
   # Flutter
   flutter:
